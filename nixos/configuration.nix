@@ -15,7 +15,6 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "milesobrian"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
@@ -32,27 +31,24 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
+  i18n.defaultLocale = "en_US.UTF-8";
+  console = {
+    font = "Lat2-Terminus16";
+    keyMap = "us";
+  };
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-
-  # Enable the GNOME 3 Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-  
+  # Enable Pantheon Desktop
+  services.xserver.desktopManager.pantheon.enable = true;
 
   # Configure keymap in X11
-  # services.xserver.layout = "us";
-  # services.xserver.xkbOptions = "eurosign:e";
+  services.xserver.layout = "us";
+  services.xserver.xkbVariant = "intl";
 
   # Enable CUPS to print documents.
-  # services.printing.enable = true;
+  services.printing.enable = true;
 
   # Enable sound.
   sound.enable = true;
@@ -61,32 +57,34 @@
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.earthling = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+  environment.variables = {
+    DEFAULT_USER = "earthling";
+    KUBECONFIG = "/etc/rancher/k3s/k3s.yaml";
   };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+  nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
     neovim
-    wget
     firefox
-    stilo-themes
-    arc-theme
-    fira-code
-    gnomeExtensions.espresso
-    gnomeExtensions.freon
     kubectl
     kubernetes-helm
     git
-    tig
     gh
+    tig
     tmux
-    fish
-    alacritty
-    atom
+    vscode
+    vscode-extensions.redhat.vscode-yaml
+    vscode-extensions.mskelton.one-dark-theme
+    vscode-extensions.ms-kubernetes-tools.vscode-kubernetes-tools
+    vscode-extensions.editorconfig.editorconfig
+  ];
+
+  fonts.fonts = with pkgs; [
+    fira-code
+    fira-code-symbols
+    powerline-fonts
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -98,15 +96,39 @@
   # };
 
   # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
+  services.k3s = {
+    enable = true;
+    extraFlags = "--write-kubeconfig-mode 644";
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+
+  programs.zsh = {
+    enable = true;
+    ohMyZsh = {
+      enable = true;
+      plugins = [ "git" "python" "helm" "kubectl"];
+      theme = "agnoster";
+    };
+  };
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.earthling = {
+    isNormalUser = true;
+    shell = pkgs.zsh;
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+  };
+
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -115,6 +137,5 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "21.05"; # Did you read the comment?
-
 }
 
