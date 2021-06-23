@@ -30,8 +30,8 @@
     };
     firewall = {
       enable = false;
-      allowedTCPPorts = [ ... ];
-      allowedUDPPorts = [ ... ];
+      # allowedTCPPorts = [ ... ];
+      # allowedUDPPorts = [ ... ];
     };
   };
 
@@ -78,11 +78,14 @@
       gh
       tig
       tmux
+      go
+      cue
       vscode
       vscode-extensions.redhat.vscode-yaml
       vscode-extensions.mskelton.one-dark-theme
       vscode-extensions.ms-kubernetes-tools.vscode-kubernetes-tools
       vscode-extensions.editorconfig.editorconfig
+      vscode-extensions.golang.Go
     ];
   };
 
