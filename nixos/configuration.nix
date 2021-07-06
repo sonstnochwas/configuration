@@ -51,6 +51,7 @@
       xkbVariant = "intl";
       libinput.enable = true;
     };
+    fwupd.enable = true;
     printing.enable = true;
     openssh.enable = true;
     k3s = {
