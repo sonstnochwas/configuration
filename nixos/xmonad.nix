@@ -18,7 +18,6 @@
 
       layout = "us";
       xkbVariant = "intl";
-      libinput.enable = true;
 
       libinput = {
         enable = true;
