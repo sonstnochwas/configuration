@@ -1,0 +1,31 @@
+---
+#
+# Copy wallpapers
+#
+
+- name: create directories
+  become: yes
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".config/wallpaper"
+
+- name: copy configuration
+  become: yes
+  copy:
+    src: "wallpaper/{{ item }}"
+    dest: "{{ user.home }}/.config/wallpaper/{{ item }}"
+  loop:
+    - "city.jpg"
+    - "d-star.jpg"
+    - "dstar.png"
+    - "goldengatebridge.jpg"
+    - "neverforget.jpg"
+    - "openwiz.png"
+    - "simple.jpg"
+    - "space.jpg"
+    - "world.jpg"
+    - "yourfather.jpg"

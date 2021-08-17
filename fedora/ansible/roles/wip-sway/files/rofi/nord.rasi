@@ -1,0 +1,123 @@
+configuration {
+    // The display name of this browser
+    display-ssh:                   "  ";
+    // The display name of this browser
+    display-run:                    "";
+    // The display name of this browser
+    display-drun:                   "";
+    // The display name of this browser
+    display-window:                 "";
+    display-combi:                  "";
+    show-icons: true;
+}
+
+
+* {
+    light: #eceff4;
+    dark: #2e3440;
+    transparent: rgba(0,0,0,0);
+    background-color: @transparent;
+    font: "FiraCode 12";
+}
+#window {
+    location: center;
+    anchor:   center;
+    padding: 10px;
+    border:  0px;
+    border-radius: 5px;
+    color: @dark;
+    background-color: @transparent;
+    spacing: 0;
+    children:  [vertb, mainbox];
+    orientation: horizontal;
+}
+
+#mainbox {
+    spacing: 0;
+    children: [ inputbar, message, listview ];
+}
+
+#message {
+    border-color: @light;
+    border:  0px 2px 2px 2px;
+    padding: 5;
+    background-color: @dark;
+    font: "FiraCode 11";
+    color: @dark;
+}
+
+#inputbar {
+    color: @light;
+    padding: 11px;
+    background-color: @dark;
+    border: 2px 2px 2px 2px;
+    border-radius:  5px 5px 0px 0px;
+    border-color: @light;
+    font: "FiraCode 13";
+}
+#entry,prompt,case-indicator {
+    text-font: inherit;
+    text-color:inherit;
+}
+#prompt {
+    margin:     0px 0.3em 0em 0em ;
+}
+
+#listview {
+    padding: 8px;
+    border-radius: 0px 0px 5px 5px;
+    border-color: @light;
+    border: 0px 2px 2px 2px;
+    background-color: @dark;
+    dynamic: false;
+    lines: 10;
+}
+
+#element {
+    padding: 3px;
+    vertical-align: 0.5;
+    border-radius: 4px;
+    background-color: @transparent;
+    color: @light;
+    font:inherit;
+}
+
+#element selected.normal {
+    background-color: @light;
+    color: @dark;
+}
+
+#vertb {
+    expand: false;
+    children: [ dummy0, sidebar, dummy1  ];
+}
+
+#dummy0,  dummy1 {
+    expand: true;
+}
+
+#sidebar {
+    expand: false;
+    orientation: vertical;
+    spacing: 0px;
+    border: 0px 0px 0px 0px;
+}
+
+#button {
+    font: "FontAwesome 22";
+    padding: 6px;
+    border: 2px 0px 2px 2px;
+    border-radius: 4px 0px 0px 4px;
+    background-color: @dark;
+    border-color: @light;
+    color: @light;
+    horizontal-align: 0.5;
+}
+
+#button selected normal {
+    color: @dark;
+    border: 2px 0px 2px 2px;
+    background-color: @light;
+    border-color: @light;
+}
+

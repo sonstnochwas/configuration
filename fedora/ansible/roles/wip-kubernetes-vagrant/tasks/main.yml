@@ -1,0 +1,49 @@
+---
+
+#- name: create directories
+#  file:
+#    path: "{{ user.home }}/{{ item }}"
+#    state: directory
+#    owner: "{{ user.name }}"
+#    group: "{{ user.group.name }}"
+#  loop:
+#    - ".config/fish/functions"
+#    - ".vim/colors"
+
+- name: Add kubernetes repository
+  become: yes
+  yum_repository:
+    name: kubernetes
+    description: Kubernetes repository
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+
+
+#- name: Install kubectl
+#  become: yes
+#  dnf:
+#    name: kubectl
+#    state: "present"
+#    update_cache: yes
+
+# https://api.github.com/repos/k3s-io/k3s/releases/latest
+
+- name: "Read list of k3s tags"
+  uri:
+    url: https://api.github.com/repos/k3s-io/k3s/tags
+    return_content: true
+  register: k3s_tags
+
+- name: "Get latest k3s version"
+  set_fact:
+    latest_k3s_version: "{{ k3s_tags | json_query('json[*].name') | map('regex_search','^v([0-9]+)\\.([0-9]+)\\.([0-9]+)([^-]+)$') | list }}"
+#    latest_k3s_version: "{{ k3s_tags | json_query('json[*].name') | map('regex_search','^v([0-9]+)\\.([0-9]+)\\.([0-9]+)') | max }}"
+
+- name: "Get latest release version"
+  debug:
+    var: "latest_k3s_version"
+
+#- name: download package
+#  get_url:
+#    url: "https://api.github.com/repos/helm/helm/tarball/{{ latest_helm_version }}"
+#    dest: "./helm-{{ latest_helm_version }}.tar.gz"

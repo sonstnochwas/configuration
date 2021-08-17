@@ -1,0 +1,35 @@
+---
+#
+# Install and configure nord theme
+# https://www.nordtheme.com/
+#
+
+- name: "Download and unarchive gtk theme from github"
+  become: yes
+  unarchive:
+    src: https://github.com/EliverLara/Nordic/releases/download/v1.9.0/Nordic-darker.tar.xz
+    dest: "/usr/share/themes/"
+    remote_src: yes
+
+- name: "Configure gtk theme"
+  # become: yes
+  # ecome_user: "{{ user.name }}"
+  dconf:
+    key: "/org/gnome/desktop/interface/gtk-theme"
+    value: "'Nordic-darker'"
+    state: present
+
+- name: "Unarchive icons"
+  become: yes
+  unarchive:
+    src: "./icons/Simply-Gray-Circles.tar.gz"
+    dest: "/usr/share/icons/"
+
+- name: "Configure icon theme"
+  # become: yes
+  # become_user: "{{ user.name }}"
+  dconf:
+    key: "/org/gnome/desktop/interface/icon-theme"
+    value: "'Simply-Gray-Circles'"
+    state: present
+

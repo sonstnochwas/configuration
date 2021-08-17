@@ -1,0 +1,29 @@
+---
+#
+#  Install and configure rofi
+#
+
+- name: create directories
+  become: yes
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".config/rofi"
+
+- name: copy configuration
+  become: yes
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ user.home }}/{{ item.dest }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - { src: 'rofi/config.rasi', dest: '.config/rofi/config.rasi' }
+    - { src: 'rofi/nord.rasi', dest: '.config/rofi/nord.rasi' }
+
+- name: "Add to package list"
+  set_fact:
+    sway_package_list: "{{ sway_package_list + ['rofi'] }}"

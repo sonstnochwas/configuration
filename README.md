@@ -1,9 +1,18 @@
-# Personal Laptop Configuration for NixOS (21.05)
+# Configuration notes for various use cases
 
-> This configuration is used for my personal Laptops (Acer Travelmate Spin B118 and Star labs LabTop Mk IV) and usually under construction ... so please use with care!
+> These configurations are for my personal use and usually under construction ... so please use with care!
 
-## References
+## elementaryOS 6
+
+Hardware:
+- Acer Travelmate Spin B118
+
+## NixOS (21.05)
 
 - [NixOS Package Search](https://search.nixos.org/packages)
 - [NixOS Options Search](https://search.nixos.org/options)
 - [NixOS Handbook](https://nixos.org/manual/nixos/stable)
+
+## Fedora 34
+
+... with Ansible etc.

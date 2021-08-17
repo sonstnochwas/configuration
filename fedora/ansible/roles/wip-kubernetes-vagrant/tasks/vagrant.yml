@@ -1,0 +1,79 @@
+---
+# tasks file for kubernetes
+
+- name: Add Google's official GPG key
+  become: yes
+  apt_key:
+    id: 54A647F9048D5688D7DA2ABE6A030B21BA07F4FB
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: Set up the stable Google repository
+  become: yes
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: kubernetes
+
+- name: Ensure kubelet, kubeadm and kubectl is installed
+  become: yes
+  apt:
+    name:
+      - 'kubelet={{ kubernetes_version }}'
+      - 'kubeadm={{ kubernetes_version }}'
+      - 'kubectl={{ kubernetes_version }}'
+    update_cache: yes
+    state: present
+
+- name: Check if cluster is running
+  become: yes
+  shell: kubectl cluster-info
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  ignore_errors: yes
+  register: cluster_info
+  changed_when: no
+
+- name: Check if init file exist
+  become: yes
+  stat:
+    path: /etc/kubernetes/cluster_initialized.txt
+  register: kubeadm_init
+
+- name: Create the master node
+  become: yes
+  shell: kubeadm init --pod-network-cidr=192.168.0.0/16 >> cluster_initialized.txt
+  when: cluster_info.rc != 0 and not kubeadm_init.stat.exists
+  args:
+    chdir: /etc/kubernetes
+    creates: cluster_initialized.txt
+
+- name: Set kubeconfig for root user
+  become: yes
+  lineinfile:
+    dest: /root/.bashrc
+    line: 'export KUBECONFIG="/etc/kubernetes/admin.conf"'
+  when: cluster_info.rc != 0
+
+- name: Install Calico as network provider
+  become: yes
+  shell: '{{ item }}'
+  with_items:
+    - kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+    - kubectl create -f https://docs.projectcalico.org/manifests/custom-resources.yaml
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: network_provider
+  changed_when: network_provider.stdout.find('created') != -1
+  failed_when: network_provider.stdout.find('created') == -1 and network_provider.stdout.find('already exists') == -1
+  when: cluster_info.rc != 0
+
+- name: Remove taints from master node to be able to deploy in it
+  become: yes
+  shell: kubectl taint nodes --all node-role.kubernetes.io/master-
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: kubectl_taint_nodes
+  changed_when: kubectl_taint_nodes.stdout.find('untainted') != -1
+  failed_when: kubectl_taint_nodes.stdout.find('untainted') == -1 and kubectl_taint_nodes.stdout.find('not found') == -1
+  when: cluster_info.rc != 0

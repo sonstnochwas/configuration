@@ -1,0 +1,30 @@
+---
+#
+# Install and configure alacritty
+#
+
+- name: "Create directories"
+  become: yes
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".config/alacritty"
+
+- name: "Copy configuration"
+  become: yes
+  copy:
+    src: "alacritty/{{ item.name }}"
+    dest: "{{ user.home }}/.config/alacritty/{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - { name: 'alacritty.yml', mode: 'u+rw' }
+
+- name: "Add to package list"
+  set_fact:
+    sway_package_list: "{{ sway_package_list + ['alacritty'] }}"
+

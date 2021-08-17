@@ -1,0 +1,34 @@
+---
+#
+# Add repositories for PowerShell and Visual Studio Code
+#
+
+- name: Add Microsoft Repository
+  become: yes
+  yum_repository:
+    name: microsoft
+    description: Microsoft repository
+    baseurl: https://packages.microsoft.com/rhel/7/prod/
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+
+- name: Add Visual Studio Code Repository
+  become: yes
+  yum_repository:
+    name: vscode
+    description: Visual Studio Code repository
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+
+- name: "Add to package list"
+  set_fact:
+    dev_package_list: "{{ dev_package_list + ['code', 'powershell'] }}"
+    #dev_package_list: "{{ dev_package_list + ['code', 'compat-openssl10', 'powershell'] }}"
+
+# ToDo:
+# - add installation of vscode extensions
+#   - ms-azuretools.vscode-docker
+#   - golang.go
+#   - oderwat.indent-rainbow
+#   - ms-kubernetes-tools.vscode-kubernetes-tools
+#   - redhat.vscode-yaml
+# - add Powershell Azure module

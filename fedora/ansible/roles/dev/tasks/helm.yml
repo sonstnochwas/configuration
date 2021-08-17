@@ -1,0 +1,21 @@
+---
+# ToDo: extract and install helm
+#
+#- name: "Read list of helm tags"
+#  uri:
+#    url: https://api.github.com/repos/helm/helm/tags
+#    return_content: true
+#  register: helm_tags
+#
+#- name: "Get latest helm version"
+#  set_fact:
+#    latest_helm_version: "{{ helm_tags | json_query('json[*].name') | map('regex_search','^v([0-9]+)\\.([0-9]+)\\.([0-9]+)') | list }}"
+#
+#- name: "Get latest release version"
+#  debug:
+#    var: "latest_helm_version"
+#
+#- name: download package
+#  get_url:
+#    url: "https://api.github.com/repos/helm/helm/tarball/{{ latest_helm_version }}"
+#    dest: "./helm-{{ latest_helm_version }}.tar.gz"

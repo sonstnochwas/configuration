@@ -1,0 +1,34 @@
+#
+# 
+#
+
+- debug: var=sway_package_list
+
+- name: import tasks
+  import_tasks: sway.yml
+
+- name: import tasks
+  import_tasks: swaylock.yml
+
+- name: import tasks
+  import_tasks: alacritty.yml
+
+- name: import tasks
+  import_tasks: rofi.yml
+
+- name: import tasks
+  import_tasks: waybar.yml
+
+- name: import tasks
+  import_tasks: wallpaper.yml
+
+#- name: import tasks
+#  import_tasks: theme.yml
+
+- name: "Ensure package is installed"
+  become: yes
+  dnf:
+    name: "{{ sway_package_list }}"
+    state: "present"
+    update_cache: yes
+

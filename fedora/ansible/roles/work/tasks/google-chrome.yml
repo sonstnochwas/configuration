@@ -1,0 +1,31 @@
+---
+#
+# Install terraform
+#
+
+- name: "Ensure package is installed"
+  become: yes
+  dnf:
+    name: "fedora-workstation-repositories"
+    state: "present"
+    update_cache: yes
+
+- name: Enable Google Chrome
+  become: yes
+  command:
+    cmd: dnf config-manager --set-enabled google-chrome
+    warn: false
+
+    # - name: Enable 3rd party repo
+    #   become: yes
+    #   yum_repository:
+    #     name: google-chrome
+    #     enabled: no
+
+- name: "Ensure package is installed"
+  become: yes
+  dnf:
+    name: "google-chrome-stable"
+    state: "present"
+    update_cache: yes
+

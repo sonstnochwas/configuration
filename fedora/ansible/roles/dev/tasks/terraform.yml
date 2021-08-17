@@ -1,0 +1,17 @@
+---
+#
+# Install terraform
+#
+
+- name: "Add Hashicorp Repository"
+  become: yes
+  yum_repository:
+    name: hashicorp
+    description: Hashicorp Stable
+    baseurl: https://rpm.releases.hashicorp.com/fedora/$releasever/$basearch/stable
+    gpgkey: https://rpm.releases.hashicorp.com/gpg
+
+- name: "Add to package list"
+  set_fact:
+    dev_package_list: "{{ dev_package_list + ['terraform'] }}"
+

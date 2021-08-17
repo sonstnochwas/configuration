@@ -1,0 +1,13 @@
+---
+base_package_list:
+  - tig
+  - htop
+  - git
+  - git-lfs
+  - fish
+  - podman
+  - buildah
+  - rust
+  - cargo
+  - python3-psutil
+  - openssl

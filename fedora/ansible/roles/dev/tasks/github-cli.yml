@@ -1,0 +1,17 @@
+---
+#
+# Install Github-CLI
+# https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+#
+
+- name: "Add github-cli repository"
+  become: yes
+  yum_repository:
+    name: gh-cli
+    description: GitHub CLI repository
+    baseurl: https://cli.github.com/packages/rpm
+    gpgkey: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc99b11deb97541f0
+
+- name: "Add to package list"
+  set_fact:
+    dev_package_list: "{{ dev_package_list + ['gh'] }}"

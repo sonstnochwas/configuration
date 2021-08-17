@@ -1,0 +1,21 @@
+#
+# Install development environment
+#
+
+- import_tasks: kubernetes.yml
+
+- import_tasks: github-cli.yml
+
+- import_tasks: terraform.yml
+
+- import_tasks: microsoft.yml
+
+#- name: import tasks
+#  import_tasks: helm.yml
+
+- name: "Ensure packages are installed"
+  become: yes
+  dnf:
+    name: "{{ dev_package_list }}"
+    state: "present"
+    update_cache: yes

@@ -1,0 +1,204 @@
+/* -----------------------------------------------------------------------------
+ * Waybar configuration
+ * Configuration reference: https://github.com/Alexays/Waybar/wiki/Configuration
+ * -------------------------------------------------------------------------- */
+
+@keyframes blink-warning {
+    70% {
+        color: @FG_light;
+    }
+
+    to {
+        color: @iFG_light;
+        background-color: @FG_warning;
+    }
+}
+
+@keyframes blink-critical {
+    70% {
+      color: @FG_light;
+    }
+
+    to {
+        color: @FG_light;
+        background-color: @FG_critical;
+    }
+}
+
+/* -----------------------------------------------------------------------------
+ * Styles
+ * -------------------------------------------------------------------------- */
+
+@define-color BG_dark #2e3440;
+@define-color BG_blue #5e81ac;
+@define-color BG_light #8fbcbb;
+@define-color FG_light #eceff4;
+@define-color FG_warning #d08770;
+@define-color FG_critical #bf616a;
+
+
+* {
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+#waybar {
+    background: @BG_dark;
+    color: @FG_light;
+    font-family: Fira Code;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#battery,
+#clock,
+#cpu,
+#custom-keyboard-layout,
+#memory,
+#mode,
+#backlight,
+#pulseaudio,
+#temperature,
+#custom-alsa,
+#tray {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#mode,
+#memory,
+#temperature,
+#battery {
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#memory.critical,
+#cpu.critical,
+#temperature.critical,
+#battery.critical {
+    color: @FG_critical;
+}
+
+#mode,
+#memory.critical,
+#temperature.critical,
+#battery.critical.discharging {
+    animation-name: blink-critical;
+    animation-duration: 2s;
+}
+
+#network.disconnected,
+#memory.warning,
+#cpu.warning,
+#temperature.warning,
+#battery.warning {
+    color: @FG_warning;
+}
+
+#battery.warning.discharging {
+    animation-name: blink-warning;
+    animation-duration: 3s;
+}
+
+#mode {
+    color: @FG_light;
+    background: #bf616a;
+}
+
+#workspaces {
+    font-weight: bold;
+    color: @FG_light;
+    background: @BG_blue;
+    background-color: @BG_blue;
+}
+
+#workspaces button {
+    font-weight: bold;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: @FG_light;
+    background: @BG_blue;
+    border: 2px solid @BG_blue;
+}
+
+#workspaces button.focused {
+    border: 2px solid @BG_blue;
+    background: @BG_light;
+}
+
+#window {
+    margin-right: 40px;
+    margin-left: 40px;
+}
+
+#custom-alsa {
+    background: @BG_dark;
+}
+
+#backlight {
+    background: @BG_blue;
+}
+
+#temperature {
+    background: @BG_dark;
+}
+
+#battery {
+    background: @BG_blue;
+}
+
+#tray {
+    background: @BG_dark;
+}
+
+#clock.date {
+    background: @BG_dark;
+}
+
+#clock.time {
+    background: @BG_blue;
+}
+
+#custom-arrowendR {
+    font-size: 17px;
+    color: @BG_blue;
+    background: transparent;
+}
+
+#custom-arrowendL {
+    font-size: 17px;
+    color: @BG_blue;
+    background: transparent;
+}
+
+#custom-arrowlightR {
+    font-size: 17px;
+    color: @BG_blue;
+    background: @BG_dark;
+}
+
+#custom-arrowdarkR {
+    font-size: 17px;
+    color: @BG_dark;
+    background: @BG_blue;
+}
+
+#custom-arrowlightL {
+    font-size: 17px;
+    color: @BG_blue;
+    background: @BG_dark;
+}
+
+#custom-arrowdarkL {
+    font-size: 17px;
+    color: @BG_dark;
+    background: @BG_blue;
+}
+

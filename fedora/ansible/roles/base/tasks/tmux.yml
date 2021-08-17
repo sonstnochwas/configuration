@@ -1,0 +1,39 @@
+---
+#
+# Install and configure tmux
+# https://github.com/arcticicestudio/nord-tmux/
+#
+
+- name: "Create directories"
+  become: yes
+  file:
+    path: "{{ user.home }}/.config/tmux"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+
+
+- name: "Download and unarchive tmux theme"
+  become: yes
+  unarchive:
+    src: https://github.com/arcticicestudio/nord-tmux/archive/v0.3.0.tar.gz
+    dest: "{{ user.home }}/.config/tmux"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+    remote_src: yes
+
+- name: "Render configuration"
+  become: yes
+  template:
+    src: "tmux/{{ item.src }}"
+    dest: "{{ user.home }}/{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  with_items:
+    - { src: 'tmux.conf.j2', dest: '.tmux.conf', mode: 'u+rw' }
+
+- name: "Add to package list"
+  set_fact:
+    base_package_list: "{{ base_package_list + ['tmux'] }}"
+

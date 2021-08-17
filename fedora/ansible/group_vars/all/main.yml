@@ -1,0 +1,14 @@
+---
+user:
+  name: "earthling"
+  home: "/home/earthling"
+  id: 1177
+  shell: "/usr/bin/fish"
+  group:
+    name: "earthling"
+    id: 1177
+  ssh_key:
+    file: ".ssh/sourcectrl"
+    comment: "generated for source control"
+    bits: 4096
+    type: "ed25519"
