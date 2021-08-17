@@ -64,3 +64,27 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose
 sudo groupadd docker
 sudo usermod -aG docker $USER
 ```
+
+## Rust
+
+Reference: [here](https://www.rust-lang.org/tools/install)
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+## kubectl
+
+Reference: [here](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-kubectl-binary-with-curl-on-linux)
+
+```bash
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+```
+
+# helm
+
+Reference: [here](https://helm.sh/docs/intro/install/#from-script)
+
+```bash
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+```
