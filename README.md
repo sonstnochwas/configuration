@@ -16,3 +16,9 @@ Hardware:
 ## Fedora 34
 
 ... with Ansible etc.
+
+## ToDo
+
+Configuration | Description
+--- | ---
+`git config --global fetch.prune true` | Configure Git to automatically remove references to deleted remote branches when fetching.
