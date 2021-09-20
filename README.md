@@ -2,20 +2,24 @@
 
 > These configurations are for my personal use and usually under construction ... so please use with care!
 
-## elementaryOS 6
+## Fedora 34
+
+... with Ansible etc.
+
+## Distro-hopping relicts
+
+I'll use Fedora (i3 spin) some time with my custom configuration ... which is about to be created.
+
+### elementaryOS 6
 
 Hardware:
 - Acer Travelmate Spin B118
 
-## NixOS (21.05)
+### NixOS (21.05)
 
 - [NixOS Package Search](https://search.nixos.org/packages)
 - [NixOS Options Search](https://search.nixos.org/options)
 - [NixOS Handbook](https://nixos.org/manual/nixos/stable)
-
-## Fedora 34
-
-... with Ansible etc.
 
 ## ToDo
 
