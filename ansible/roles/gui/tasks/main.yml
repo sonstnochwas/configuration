@@ -2,6 +2,12 @@
 # Install gui tools
 #
 
+- set_fact:
+    gui_package_list:
+      - "jq"
+      - "fira-code-fonts"
+      - "fontawesome-fonts"
+
 - import_tasks: alacritty.yml
 
 - import_tasks: wallpaper.yml
