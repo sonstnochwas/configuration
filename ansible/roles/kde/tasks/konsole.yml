@@ -1,0 +1,17 @@
+---
+#
+# Configure konsole
+#
+
+- name: Edit configuration file
+  ini_file:
+    path: /home/{{ user.name }}/.config/konsolerc
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    mode: '0600'
+    backup: yes
+  with_items:
+    - { section: 'MainWindow', option: 'MenuBar', value: 'Disabled' }
+    - { section: 'MainWindow', option: 'StatusBar', value: 'Disabled' }
+

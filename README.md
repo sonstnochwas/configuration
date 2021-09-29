@@ -4,11 +4,15 @@
 
 ## Fedora 34
 
-... with Ansible etc.
+Here could be a extensive discussion about the GUI I prefer, but to be honest this is changing several times a year. I haven't used KDE Plasma in a wile so ... say "Hi!" to Fedora KDE spin :-)
 
-## Distro-hopping relicts
+After the base installation the user creation, software installation and KDE customization is done by Ansible.
 
-I'll use Fedora (i3 spin) some time with my custom configuration ... which is about to be created.
+By the way: KDE Plasma configuration seems to be straight forward with `ini`-files in `.config/`. There is an [Ansible module](https://docs.ansible.com/ansible/2.9/modules/ini_file_module.html) for that! Very handy!
+
+## Distro-hopping relics
+
+I'll use Fedora (i3wm and KDE spin) some time with my custom configuration ... which is about to be created.
 
 ### elementaryOS 6
 

@@ -1,0 +1,22 @@
+#
+# Install 
+#
+
+- set_fact:
+    gui_package_list:
+      - "jq"
+      - "fira-code-fonts"
+      - "fontawesome-fonts"
+
+- import_tasks: konsole.yml
+
+- import_tasks: wallpaper.yml
+
+- import_tasks: vivaldi.yml
+
+- name: "Ensure package is installed"
+  become: yes
+  dnf:
+    name: "{{ gui_package_list }}"
+    state: "present"
+    update_cache: yes

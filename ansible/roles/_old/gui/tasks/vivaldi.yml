@@ -1,0 +1,16 @@
+---
+#
+# Install vivaldi
+#
+
+- name: Add vivaldi repository
+  become: yes
+  yum_repository:
+    name: vivaldi
+    description: Vivaldi Fedora repo
+    baseurl: https://repo.vivaldi.com/archive/rpm/$basearch
+    gpgkey: https://repo.vivaldi.com/archive/linux_signing_key.pub
+
+- name: "Add to package list"
+  set_fact:
+    gui_package_list: "{{ gui_package_list + ['vivaldi-stable'] }}"
