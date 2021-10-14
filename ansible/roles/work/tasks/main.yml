@@ -1,6 +1,7 @@
-#
-# Install work related tools
-#
+---
+#------------------------------------------------------------------------------
+# install work related tools
+#------------------------------------------------------------------------------
 
 - name: initialize package list
   set_fact:
@@ -10,7 +11,7 @@
 
 - import_tasks: google-chrome.yml
 
-- name: "Ensure packages are installed"
+- name: ensure packages are installed
   become: yes
   dnf:
     name: "{{ work_package_list }}"

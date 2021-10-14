@@ -1,0 +1,21 @@
+---
+#------------------------------------------------------------------------------
+# remove stuff not needed
+#------------------------------------------------------------------------------
+
+- name: remove obsolete packages
+  become: yes
+  dnf:
+    name:
+      - "kmail"
+      - "kontact"
+      - "knode"
+      - "akgregator"
+      - "kget"
+      - "konqueror"
+    state: absent
+
+- name: clean obsolete packages
+  become: yes
+  dnf:
+    autoremove: yes

@@ -1,9 +1,18 @@
 ---
-#
-# Add repositories for PowerShell and Visual Studio Code
-#
+#------------------------------------------------------------------------------
+# install teams, powershell and visual studio code
+#------------------------------------------------------------------------------
 
-- name: Add Microsoft Repository
+- name: add teams repository
+  become: yes
+  yum_repository:
+    name: teams
+    description: Microsoft Teams repository
+    baseurl: https://packages.microsoft.com/yumrepos/ms-teams
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+
+
+- name: add powershell repository
   become: yes
   yum_repository:
     name: microsoft
@@ -11,7 +20,7 @@
     baseurl: https://packages.microsoft.com/rhel/7/prod/
     gpgkey: https://packages.microsoft.com/keys/microsoft.asc
 
-- name: Add Visual Studio Code Repository
+- name: add visual studio code repository
   become: yes
   yum_repository:
     name: vscode
@@ -19,9 +28,9 @@
     baseurl: https://packages.microsoft.com/yumrepos/vscode
     gpgkey: https://packages.microsoft.com/keys/microsoft.asc
 
-- name: "Add to package list"
+- name: add to package list
   set_fact:
-    dev_package_list: "{{ dev_package_list + ['code', 'powershell'] }}"
+    dev_package_list: "{{ dev_package_list + ['code', 'powershell', 'teams'] }}"
 
 # ToDo:
 # - add installation of vscode extensions

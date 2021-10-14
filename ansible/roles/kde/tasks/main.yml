@@ -1,6 +1,7 @@
-#
-# Install 
-#
+---
+#------------------------------------------------------------------------------
+# kde customization 
+#------------------------------------------------------------------------------
 
 - name: initialize package list
   set_fact:
@@ -8,13 +9,15 @@
       - "fira-code-fonts"
       - "fontawesome-fonts"
 
+- import_tasks: clean-up.yml
+
 - import_tasks: konsole.yml
 
 - import_tasks: wallpaper.yml
 
 - import_tasks: vivaldi.yml
 
-- name: "Ensure package is installed"
+- name: ensure package is installed
   become: yes
   dnf:
     name: "{{ kde_package_list }}"

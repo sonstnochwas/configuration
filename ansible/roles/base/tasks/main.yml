@@ -1,6 +1,7 @@
-#
-# Install base environment
-#
+---
+#------------------------------------------------------------------------------
+# base environment
+#------------------------------------------------------------------------------
 
 - name: initialize package list
   set_fact:
@@ -19,13 +20,27 @@
       - "tree"
       - "bat"
 
+- name: speed up dnf
+  become: yes
+  ini_file:
+    path: /etc/dnf/dnf.conf
+    section: main
+    option: "fastestmirror"
+    value: "true"
+
+- name: update system
+  become: yes
+  dnf:
+    name: '*'
+    state: latest
+
 - import_tasks: user.yml
 
 - import_tasks: neovim.yml
 
 - import_tasks: tmux.yml
 
-- name: "Ensure packages are installed"
+- name: ensure packages are installed
   become: yes
   dnf:
     name: "{{ base_package_list }}"
