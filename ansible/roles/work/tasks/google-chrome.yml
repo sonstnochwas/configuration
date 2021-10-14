@@ -16,16 +16,6 @@
     cmd: dnf config-manager --set-enabled google-chrome
     warn: false
 
-    # - name: Enable 3rd party repo
-    #   become: yes
-    #   yum_repository:
-    #     name: google-chrome
-    #     enabled: no
-
-- name: "Ensure package is installed"
-  become: yes
-  dnf:
-    name: "google-chrome-stable"
-    state: "present"
-    update_cache: yes
-
+- name: "Add to package list"
+  set_fact:
+    work_package_list: "{{ work_package_list + ['google-chrome-stable'] }}"

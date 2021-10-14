@@ -13,4 +13,4 @@
 
 - name: "Add to package list"
   set_fact:
-    gui_package_list: "{{ gui_package_list + ['vivaldi-stable'] }}"
+    kde_package_list: "{{ kde_package_list + ['vivaldi-stable'] }}"

@@ -2,9 +2,9 @@
 # Install 
 #
 
-- set_fact:
-    gui_package_list:
-      - "jq"
+- name: initialize package list
+  set_fact:
+    kde_package_list:
       - "fira-code-fonts"
       - "fontawesome-fonts"
 
@@ -17,6 +17,6 @@
 - name: "Ensure package is installed"
   become: yes
   dnf:
-    name: "{{ gui_package_list }}"
+    name: "{{ kde_package_list }}"
     state: "present"
     update_cache: yes

@@ -3,6 +3,29 @@
 # Configure konsole
 #
 
+
+- name: "Create directories"
+  become: yes
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".local/share/konsole"
+
+- name: "Copy configuration"
+  become: yes
+  copy:
+    src: "konsole/{{ item.name }}"
+    dest: "{{ user.home }}/.local/share/konsole/{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  with_items:
+    - { name: 'nord.colorscheme', mode: 'u+rw' }
+    - { name: 'custom.profile', mode: 'u+rw' }
+
 - name: Edit configuration file
   ini_file:
     path: /home/{{ user.name }}/.config/konsolerc
@@ -12,6 +35,8 @@
     mode: '0600'
     backup: yes
   with_items:
+    - { section: 'Desktop Entry', option: 'DefaultProfile', value: 'custom' }
     - { section: 'MainWindow', option: 'MenuBar', value: 'Disabled' }
     - { section: 'MainWindow', option: 'StatusBar', value: 'Disabled' }
+    - { section: 'MainWindow', option: 'ToolBarsMovable', value: 'Disabled' }
 

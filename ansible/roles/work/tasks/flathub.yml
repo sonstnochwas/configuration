@@ -10,7 +10,6 @@
     flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
     method: user
 
-
 - name: "Install slack"
   flatpak:
     name: "{{ item }}"
@@ -18,8 +17,11 @@
     remote: flathub
     method: user
   loop:
-    - "com.slack.Slack"
     - "com.microsoft.Teams"
     - "com.getpostman.Postman"
     - "com.bitwarden.desktop"
 
+#    - "com.slack.Slack"
+#    - "com.microsoft.Teams"
+#    - "com.getpostman.Postman"
+#    - "com.bitwarden.desktop"

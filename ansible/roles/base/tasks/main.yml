@@ -1,6 +1,23 @@
 #
-# Install development environment
+# Install base environment
 #
+
+- name: initialize package list
+  set_fact:
+    base_package_list:
+      - "tig"
+      - "htop"
+      - "git"
+      - "git-lfs"
+      - "podman"
+      - "buildah"
+      - "rust"
+      - "cargo"
+      - "python3-psutil"
+      - "openssl"
+      - "jq"
+      - "tree"
+      - "bat"
 
 - import_tasks: user.yml
 
