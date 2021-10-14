@@ -14,8 +14,4 @@
       - "kget"
       - "konqueror"
     state: absent
-
-- name: clean obsolete packages
-  become: yes
-  dnf:
     autoremove: yes

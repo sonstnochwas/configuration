@@ -5,6 +5,7 @@
 
 - name: create directories
   become: yes
+  become_user: "{{ user.name }}"
   file:
     path: "{{ user.home }}/{{ item }}"
     state: directory
@@ -15,6 +16,7 @@
 
 - name: copy configuration
   become: yes
+  become_user: "{{ user.name }}"
   copy:
     src: "konsole/{{ item.name }}"
     dest: "{{ user.home }}/.local/share/konsole/{{ item.name }}"
@@ -26,6 +28,8 @@
     - { name: 'custom.profile', mode: 'u+rw' }
 
 - name: edit configuration file
+  become: yes
+  become_user: "{{ user.name }}"
   ini_file:
     path: /home/{{ user.name }}/.config/konsolerc
     section: "{{ item.section }}"
