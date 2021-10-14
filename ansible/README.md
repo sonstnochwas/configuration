@@ -1,32 +1,29 @@
-# setup
+# Configure Fedora 34 KDE Spin
 
-
-
-
-## prepare
+## Prepare
 
 ```bash
 # create key
 ssh-keygen -t ed25519 -C "your_email@example.com"
 
 # copy key
-ssh-copy-id -i ~/.ssh/id_ed25519 user@host
+ssh-copy-id -i ~/.ssh/id_ed25519 user-name@ip-address
 
 # test connection
-ansible -m setup -i host -u user
+ansible -m setup -i ip-address, -u user-name --ask-become-pass
 ```
 
 My personal Ansible playbook to install and configure my fedora installation.
 
 ```bash
 # install and configure system
-ansible-playbook playbook.yml -i hosts.ini  -u user --ask-become-pass
+ansible-playbook base-playbook.yml -i ip-address, -u user-name --ask-become-pass
 ```
 
 > **Note:** Change password of new user (default name: *earthling*)
 
 ```bash
-ssh user@host
+ssh user-name@ip-address
 sudo passwd earthling
 ```
 
