@@ -1,0 +1,22 @@
+---
+#------------------------------------------------------------------------------
+# add flathub support
+#------------------------------------------------------------------------------
+
+- name: add the flathub flatpak repository
+  flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+    method: user
+
+#- name: "Install flatpacks"
+#  flatpak:
+#    name: "{{ item }}"
+#    state: present
+#    remote: flathub
+#    method: user
+#  loop:
+#    - "com.slack.Slack"
+#    - "com.getpostman.Postman"
+#    - "com.bitwarden.desktop"

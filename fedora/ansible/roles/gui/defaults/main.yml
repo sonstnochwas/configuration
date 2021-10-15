@@ -1,8 +1,0 @@
----
-gui_package_list:
-  - "jq"
-  - "fira-code-fonts"
-  - "flat-remix-theme"
-  - "gnome-tweaks"
-  - "gnome-extensions-app"
-  - "gnome-shell-extension-caffeine"

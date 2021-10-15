@@ -1,0 +1,48 @@
+---
+#------------------------------------------------------------------------------
+# base environment
+#------------------------------------------------------------------------------
+
+- name: initialize package list
+  set_fact:
+    base_package_list:
+      - "tig"
+      - "htop"
+      - "git"
+      - "git-lfs"
+      - "podman"
+      - "buildah"
+      - "rust"
+      - "cargo"
+      - "python3-psutil"
+      - "openssl"
+      - "jq"
+      - "tree"
+      - "bat"
+
+- name: speed up dnf
+  become: yes
+  ini_file:
+    path: /etc/dnf/dnf.conf
+    section: main
+    option: "fastestmirror"
+    value: "true"
+
+- name: update system
+  become: yes
+  dnf:
+    name: '*'
+    state: latest
+
+- import_tasks: user.yml
+
+- import_tasks: neovim.yml
+
+- import_tasks: tmux.yml
+
+- name: ensure packages are installed
+  become: yes
+  dnf:
+    name: "{{ base_package_list }}"
+    state: "present"
+    update_cache: yes
