@@ -1,7 +1,6 @@
 ---
 - hosts: all
   tasks:
-
     - name: "Create user and configure shell"
       import_role:
         name: base
@@ -16,4 +15,3 @@
       import_role:
         name: kde
       become_method: sudo
-      become_user: "{{ user.name }}"
