@@ -1,5 +1,29 @@
 # elementary OS 6
 
+## Preparation
+
+### Install elementary OS 6
+
+- Download iso
+- create USB/DVD
+- install *)
+
+*) the user created during installation should not be named like the user created with ansible, because I have simply not tested it, yet.
+
+### Install and start `sshd`
+
+`sshd` is not included in default installation, so we need to add it:
+
+```bash
+# install
+$ sudo apt install openssh-server
+# (optional) check status
+$ sudo systemctl start sshd
+```
+
+... should be `active` and `running` now.
+
+
 ## Additional packages
 
 ```bash
