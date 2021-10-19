@@ -1,0 +1,66 @@
+---
+#------------------------------------------------------------------------------
+# extra packages
+#------------------------------------------------------------------------------
+
+- name: initialize package list
+  set_fact:
+    extra_package_list:
+      - "tig"
+      - "htop"
+      - "git"
+      - "git-lfs"
+      - "rust"
+      - "cargo"
+      - "openssl"
+      - "jq"
+      - "tree"
+
+# Add specified repository into sources list.
+- apt_repository:
+    repo: deb http://archive.canonical.com/ubuntu hardy partner
+    state: present
+
+# Add specified repository into sources list using specified filename.
+- apt_repository:
+    repo: deb http://dl.google.com/linux/chrome/deb/ stable main
+    state: present
+    filename: google-chrome
+
+# Add source repository into sources list.
+- apt_repository:
+    repo: deb-src http://archive.canonical.com/ubuntu hardy partner
+    state: present
+
+# Remove specified repository from sources list.
+- apt_repository:
+    repo: deb http://archive.canonical.com/ubuntu hardy partner
+    state: absent
+
+# Add nginx stable repository from PPA and install its signing key.
+# On Ubuntu target:
+- apt_repository:
+    repo: ppa:nginx/stable
+
+# On Debian target
+- apt_repository:
+    repo: 'ppa:nginx/stable'
+    codename: trusty
+
+
+- name: update all packages to their latest version
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+    autoremove: yes
+
+
+#- import_tasks: tmux.yml
+
+- name: ensure packages are installed
+  become: yes
+  apt:
+    name: "{{ extra_package_list }}"
+    state: latest
+    update_cache: yes
