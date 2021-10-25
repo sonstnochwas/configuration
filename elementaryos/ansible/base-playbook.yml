@@ -5,3 +5,8 @@
       import_role:
         name: base
       become_method: sudo
+
+    - name: "Create user and configure shell"
+      import_role:
+        name: extra
+      become_method: sudo

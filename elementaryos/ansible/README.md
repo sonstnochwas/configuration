@@ -7,7 +7,7 @@
 ssh-keygen -t ed25519 -C "your_email@example.com"
 
 # copy key
-ssh-copy-id -i ~/.ssh/id_ed25519 user-name@ip-address
+ssh-copy-id -i ~/.ssh/id_ed25519.pub user-name@ip-address
 
 # test connection
 ansible -m setup -i ip-address, -u user-name --ask-become-pass

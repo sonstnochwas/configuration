@@ -5,20 +5,11 @@
 
 - name: initialize package list
   set_fact:
-    extra_package_list:
-      - "firefox"
+    extra_package_list: "{{ [] }}"
 
+- import_tasks: elementary.yml
 
-- name: Add repository for Mozilla VPN
-  apt_repository:
-    repo: ppa:mozillacorp/mozillavpn
-
-- name: Add Mozilla VPN to package list
-  set_fact:
-    extra_package_list: "{{ extra_package_list + ['mozillavpn'] }}"
-
-
-
+- import_tasks: mozilla.yml
 
 - name: ensure packages are installed
   become: yes

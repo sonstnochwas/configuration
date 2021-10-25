@@ -16,7 +16,7 @@
       - "htop"
       - "git"
       - "git-lfs"
-      - "rust"
+      - "rustc"
       - "cargo"
       - "openssl"
       - "jq"
@@ -24,6 +24,7 @@
       - "apt-transport-https"
       - "ca-certificates"
       - "gnupg"
+      - "software-properties-common"
 
 - import_tasks: user.yml
 
@@ -32,6 +33,7 @@
 - import_tasks: tmux.yml
 
 - name: update all packages to their latest version
+  become: yes
   apt:
     name: "*"
     state: latest

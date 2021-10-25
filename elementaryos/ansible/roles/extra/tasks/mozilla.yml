@@ -1,0 +1,13 @@
+---
+#------------------------------------------------------------------------------
+# mozilla packages
+#------------------------------------------------------------------------------
+
+
+- name: Add repository for Mozilla VPN
+  apt_repository:
+    repo: ppa:mozillacorp/mozillavpn
+
+- name: Add Mozilla VPN to package list
+  set_fact:
+    extra_package_list: "{{ extra_package_list + ['firefox', 'mozillavpn'] }}"
