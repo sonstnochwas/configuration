@@ -12,3 +12,26 @@ user:
     comment: "generated for source control"
     bits: 4096
     type: "ed25519"
+    preferences:
+      dconf:
+        - option: /io/elementary/desktop/wingpanel/power/show-percentage
+          value: 'true'
+        - option: /net/launchpad/plank/docks/dock1/icon-size
+          value: 64
+        - option: /org/gnome/desktop/a11y/mouse/secondary-click-enabled
+          value: 'true'
+        - option: /org/gnome/desktop/peripherals/touchpad/natural-scroll
+          value: 'true'
+        - option: /org/gnome/desktop/peripherals/touchpad/speed
+          value: 0.5
+        - option: /org/gnome/desktop/privacy/remove-old-temp-files
+          value: 'true'
+        - option: /org/gnome/settings-daemon/plugins/color/night-light-enabled
+          value: 'true'
+        - option: /org/gnome/settings-daemon/plugins/media-keys/decrease-text-size
+          value: "'<Shift><Super>underscore'"
+        - option: /org/gnome/settings-daemon/plugins/media-keys/increase-text-size
+          value: "'<Shift><Super>plus'"
+        # Automatically adjust display brightness (doesn't work in a VM):
+        - option: /org/gnome/settings-daemon/plugins/power/ambient-enabled
+          value: 'true'

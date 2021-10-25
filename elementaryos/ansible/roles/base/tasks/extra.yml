@@ -37,31 +37,6 @@
 
 
 #------------------------------------------------------------------------------
-# Microsoft
-#------------------------------------------------------------------------------
-
-- name: Add APT signing key
-  become: true
-  apt_key:
-    url: https://packages.microsoft.com/keys/microsoft.asc
-    keyring: /etc/apt/trusted.gpg.d/packages.microsoft.gpg
-    state: present
-
-- name: Add vscode repository
-  become: true
-  apt_repository:
-    repo: deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main
-    state: present
-    filename: microsoft-vscode
-
-- name: Install additional packages
-  become: true
-  apt:
-    name: code
-    state: present
-
-
-#------------------------------------------------------------------------------
 # Google Chrome
 #------------------------------------------------------------------------------
 
@@ -134,6 +109,30 @@
 
 
 #------------------------------------------------------------------------------
+# Kubectl
+#------------------------------------------------------------------------------
+
+- name: Add APT signing key
+  become: true
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    keyring: /etc/apt/trusted.gpg.d/packages.kubernetes.gpg
+    state: present
+
+- name: Add vscode repository
+  become: true
+  apt_repository:
+    repo: deb [/etc/apt/trusted.gpg.d/packages.kubernetes.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: kubernetes-kubectl
+
+- name: Install additional packages
+  become: true
+  apt:
+    name: kubectl
+    state: present
+
+#------------------------------------------------------------------------------
 # Docker CE
 #------------------------------------------------------------------------------
 
@@ -180,3 +179,45 @@
     groups:
       - docker
     append: yes
+
+
+#------------------------------------------------------------------------------
+# Microsoft
+#------------------------------------------------------------------------------
+
+- name: Add APT signing key
+  become: true
+  apt_key:
+    url: https://packages.microsoft.com/keys/microsoft.asc
+    keyring: /etc/apt/trusted.gpg.d/packages.microsoft.gpg
+    state: present
+
+- name: Add vscode repository
+  become: true
+  apt_repository:
+    repo: deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main
+    state: present
+    filename: microsoft-vscode
+
+- name: Add teams repository
+  become: true
+  apt_repository:
+    repo: deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/ms-teams stable main
+    state: present
+    filename: microsoft-teams
+
+- name: Add azure-cli repository
+  become: true
+  apt_repository:
+    repo: deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/azure-cli focal main
+    state: present
+    filename: microsoft-azure-cli
+
+- name: Install additional packages
+  become: true
+  apt:
+    pkg:
+      - code
+      - teams
+      - azure-cli
+    state: present

@@ -1,6 +1,6 @@
 ---
 #------------------------------------------------------------------------------
-# Base packages
+# Configure elementary OS 6
 #------------------------------------------------------------------------------
 
 - name: Install additional packages
@@ -30,3 +30,5 @@
 - import_tasks: neovim.yml
 
 - import_tasks: tmux.yml
+
+- import_tasks: extra.yml

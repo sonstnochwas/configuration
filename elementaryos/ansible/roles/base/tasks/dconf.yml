@@ -1,0 +1,11 @@
+---
+#------------------------------------------------------------------------------
+# Configuration
+#------------------------------------------------------------------------------
+
+- name: Apply dconf settings.
+  become_user: '{{ user.name }}'
+  community.general.dconf:
+    key: '{{ item.option }}'
+    value: '{{ item.value }}'
+  with_items: '{{ user.preferences.dconf }}'
