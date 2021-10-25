@@ -5,11 +5,125 @@
 
 - name: initialize package list
   set_fact:
-    extra_package_list: "{{ [] }}"
+    extra_package_list:
+      - dconf-editor
+      - remmina
 
-- import_tasks: elementary.yml
+#------------------------------------------------------------------------------
+# Elementary OS
+#------------------------------------------------------------------------------
 
-- import_tasks: mozilla.yml
+- name: Add repository
+  become: yes
+  apt_repository:
+    repo: ppa:philip.scott/pantheon-tweaks
+
+- name: Add package(s)
+  set_fact:
+    extra_package_list: "{{ extra_package_list + ['pantheon-tweaks'] }}"
+
+#------------------------------------------------------------------------------
+# Mozilla
+#------------------------------------------------------------------------------
+
+- name: Add repository for Mozilla VPN
+  become: yes
+  apt_repository:
+    repo: ppa:mozillacorp/mozillavpn
+
+- name: Add package(s)
+  set_fact:
+    extra_package_list: "{{ extra_package_list + ['firefox', 'mozillavpn'] }}"
+
+#------------------------------------------------------------------------------
+# Microsoft
+#------------------------------------------------------------------------------
+
+- name: Add Microsoft apt signing key
+  become: yes
+  apt_key:
+    url: https://packages.microsoft.com/keys/microsoft.asc
+    keyring: /etc/apt/trusted.gpg.d/packages.microsoft.gpg
+    state: present
+
+- name: Add vscode repository
+  become: yes
+  apt_repository:
+    repo: deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main
+    state: present
+    filename: microsoft-vscode
+
+- name: Add package(s)
+  set_fact:
+    extra_package_list: "{{ extra_package_list + ['code'] }}"
+
+#------------------------------------------------------------------------------
+# Google Chrome
+#------------------------------------------------------------------------------
+
+- name: Add Apt signing key
+  become: yes
+  apt_key:
+    url: "https://dl.google.com/linux/linux_signing_key.pub"
+    state: present
+
+- name: Add google chrome repository
+  become: yes
+  apt_repository:
+    repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+    state: present
+    filename: google-chrome
+
+- name: Add package(s)
+  set_fact:
+    extra_package_list: "{{ extra_package_list + ['google-chrome-stable'] }}"
+
+#------------------------------------------------------------------------------
+# Vivaldi
+#------------------------------------------------------------------------------
+
+- name: Add Vivaldi signing key
+  become: yes
+  apt_key:
+    url: https://repo.vivaldi.com/archive/linux_signing_key.pub
+    state: present
+
+- name: Add vivaldi repository
+  become: yes
+  apt_repository:
+    repo: deb [arch=amd64] https://repo.vivaldi.com/archive/deb/ stable main
+    state: present
+    filename: vivaldi
+
+- name: Add package(s)
+  set_fact:
+    extra_package_list: "{{ extra_package_list + ['vivaldi-stable'] }}"
+
+#------------------------------------------------------------------------------
+# Github CLI
+#------------------------------------------------------------------------------
+
+- name: Add apt signing key
+  become: yes
+  apt_key:
+    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    keyring: /etc/apt/trusted.gpg.d/packages.github.gpg
+    state: present
+
+- name: Add vscode repository
+  become: yes
+  apt_repository:
+    repo: deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.github.gpg] https://cli.github.com/packages stable main
+    state: present
+    filename: github-cli
+
+- name: Add package(s)
+  set_fact:
+    extra_package_list: "{{ extra_package_list + ['gh'] }}"
+
+#------------------------------------------------------------------------------
+# Install everything
+#------------------------------------------------------------------------------
 
 - name: ensure packages are installed
   become: yes
@@ -17,36 +131,3 @@
     name: "{{ extra_package_list }}"
     state: latest
     update_cache: yes
-
-#--------------------
-#
-## Add specified repository into sources list.
-#- apt_repository:
-#    repo: deb http://archive.canonical.com/ubuntu hardy partner
-#    state: present
-#
-## Add specified repository into sources list using specified filename.
-#- apt_repository:
-#    repo: deb http://dl.google.com/linux/chrome/deb/ stable main
-#    state: present
-#    filename: google-chrome
-#
-## Add source repository into sources list.
-#- apt_repository:
-#    repo: deb-src http://archive.canonical.com/ubuntu hardy partner
-#    state: present
-#
-## Remove specified repository from sources list.
-#- apt_repository:
-#    repo: deb http://archive.canonical.com/ubuntu hardy partner
-#    state: absent
-#
-## Add nginx stable repository from PPA and install its signing key.
-## On Ubuntu target:
-#- apt_repository:
-#    repo: ppa:nginx/stable
-#
-## On Debian target
-#- apt_repository:
-#    repo: 'ppa:nginx/stable'
-#    codename: trusty

@@ -1,0 +1,29 @@
+---
+- name: Massage ansible_distribution_release for elementary OS 6
+  set_fact:
+    massaged_ansible_distribution_release: focal
+  when: ansible_distribution_release == "odin"
+
+- name: Bypass ansible_distribution_release for non elementary OS
+  set_fact:
+    massaged_ansible_distribution_release: "{{ ansible_distribution_release }}"
+  when: ansible_distribution_release != "odin"
+
+- name: Install GPG key
+  become: true
+  ansible.builtin.apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+
+- name: Install PPA
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ massaged_ansible_distribution_release }} main"
+    state: present
+
+- name: Install apt package
+  become: true
+  apt:
+    name: "terraform"
+    state: present
+    update_cache: "yes"
