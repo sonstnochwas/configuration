@@ -40,17 +40,18 @@
   become: yes
   copy:
     src: "fish/{{ item.name }}"
-    dest: "{{ user.home }}/.config/fish/functions/{{ item.name }}"
+    dest: "{{ user.home }}/.config/fish/{{ item.name }}"
     mode: "{{ item.mode }}"
   with_items:
-    - { name: '__bobthefish_colors.fish', mode: 'u+rw' }
-    - { name: '__bobthefish_glyphs.fish',  mode: 'u+rw' }
-    - { name: 'fish_prompt.fish', mode: 'u+rw' }
-    - { name: '__bobthefish_display_colors.fish', mode: 'u+rw' }
-    - { name: 'fish_greeting.fish', mode: 'u+rw' }
-    - { name: 'fish_title.fish', mode: 'u+rw' }
-    - { name: 'bobthefish_display_colors.fish', mode: 'u+rw' }
-    - { name: 'fish_mode_prompt.fish', mode: 'u+rw' }
+    - { name: 'config.fish', mode: 'u+rw' }
+    - { name: 'functions/__bobthefish_colors.fish', mode: 'u+rw' }
+    - { name: 'functions/__bobthefish_glyphs.fish',  mode: 'u+rw' }
+    - { name: 'functions/fish_prompt.fish', mode: 'u+rw' }
+    - { name: 'functions/__bobthefish_display_colors.fish', mode: 'u+rw' }
+    - { name: 'functions/fish_greeting.fish', mode: 'u+rw' }
+    - { name: 'functions/fish_title.fish', mode: 'u+rw' }
+    - { name: 'functions/bobthefish_display_colors.fish', mode: 'u+rw' }
+    - { name: 'functions/fish_mode_prompt.fish', mode: 'u+rw' }
 
 - name: add to package list
   set_fact:

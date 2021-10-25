@@ -3,7 +3,6 @@
 # mozilla packages
 #------------------------------------------------------------------------------
 
-
 - name: Add repository for Mozilla VPN
   apt_repository:
     repo: ppa:mozillacorp/mozillavpn
