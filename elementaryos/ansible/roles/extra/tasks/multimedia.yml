@@ -1,8 +1,0 @@
-- name: Install multimedia codecs
-  apt: name="{{package}}" state=present
-  vars:
-    package:
-    - ubuntu-restricted-extras
-    - libavcodec-extra
-    - ffmpeg
-  become: true

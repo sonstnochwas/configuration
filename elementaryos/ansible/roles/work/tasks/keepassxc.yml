@@ -1,10 +1,10 @@
 - name: Add KeepassXC Repository
-  become: yes
+  become: true
   apt_repository:
     repo: ppa:phoerious/keepassxc
 
 - name: Install KeepassXC
-  become: yes
+  become: true
   apt:
     name: keepassxc
     update_cache: yes

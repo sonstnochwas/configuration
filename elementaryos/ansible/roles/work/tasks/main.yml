@@ -1,5 +1,14 @@
 ---
 #------------------------------------------------------------------------------
+# extra packages
+#------------------------------------------------------------------------------
+
+- name: initialize package list
+  set_fact:
+    work_package_list:
+      - remmina
+
+#------------------------------------------------------------------------------
 # Elementary OS
 #------------------------------------------------------------------------------
 
@@ -8,17 +17,9 @@
   apt_repository:
     repo: ppa:philip.scott/pantheon-tweaks
 
-- name: Install additional packages
-  become: true
-  apt:
-    pkg:
-      - pantheon-tweaks
-      - dconf-editor
-      - ubuntu-restricted-extras
-      - libavcodec-extra
-      - ffmpeg
-    state: present
-
+- name: Add package(s)
+  set_fact:
+    extra_package_list: "{{ extra_package_list + ['pantheon-tweaks'] }}"
 
 #------------------------------------------------------------------------------
 # Mozilla
@@ -29,18 +30,15 @@
   apt_repository:
     repo: ppa:mozillacorp/mozillavpn
 
-- name: Install additional packages
-  become: true
-  apt:
-    name: firefox mozillavpn
-    state: present
-
+- name: Add package(s)
+  set_fact:
+    extra_package_list: "{{ extra_package_list + ['firefox', 'mozillavpn'] }}"
 
 #------------------------------------------------------------------------------
 # Microsoft
 #------------------------------------------------------------------------------
 
-- name: Add APT signing key
+- name: Add Microsoft apt signing key
   become: true
   apt_key:
     url: https://packages.microsoft.com/keys/microsoft.asc
@@ -54,18 +52,15 @@
     state: present
     filename: microsoft-vscode
 
-- name: Install additional packages
-  become: true
-  apt:
-    name: code
-    state: present
-
+- name: Add package(s)
+  set_fact:
+    extra_package_list: "{{ extra_package_list + ['code'] }}"
 
 #------------------------------------------------------------------------------
 # Google Chrome
 #------------------------------------------------------------------------------
 
-- name: Add APT signing key
+- name: Add Apt signing key
   become: true
   apt_key:
     url: "https://dl.google.com/linux/linux_signing_key.pub"
@@ -78,18 +73,15 @@
     state: present
     filename: google-chrome
 
-- name: Install additional packages
-  become: true
-  apt:
-    name: google-chrome-stable
-    state: present
-
+- name: Add package(s)
+  set_fact:
+    extra_package_list: "{{ extra_package_list + ['google-chrome-stable'] }}"
 
 #------------------------------------------------------------------------------
 # Vivaldi
 #------------------------------------------------------------------------------
 
-- name: Add APT signing key
+- name: Add Vivaldi signing key
   become: true
   apt_key:
     url: https://repo.vivaldi.com/archive/linux_signing_key.pub
@@ -102,12 +94,9 @@
     state: present
     filename: vivaldi
 
-- name: Install additional packages
-  become: true
-  apt:
-    name: vivaldi-stable
-    state: present
-    extra_package_list: "{{ extra_package_list + [''] }}"
+- name: Add package(s)
+  set_fact:
+    extra_package_list: "{{ extra_package_list + ['vivaldi-stable'] }}"
 
 #------------------------------------------------------------------------------
 # Github CLI
@@ -127,56 +116,17 @@
     state: present
     filename: github-cli
 
-- name: Install additional packages
-  become: true
-  apt:
-    name: gh
-
+- name: Add package(s)
+  set_fact:
+    extra_package_list: "{{ extra_package_list + ['gh'] }}"
 
 #------------------------------------------------------------------------------
-# Docker CE
+# Install everything
 #------------------------------------------------------------------------------
 
-- name: Remove legacy Docker packages
+- name: ensure packages are installed
   become: true
   apt:
-    name: "{{ package }}"
-    purge: yes
-    state: absent
-  vars:
-    package:
-    - lxc-docker
-    - docker
-    - docker-engine
-
-- name: Add APT signing key
-  become: true
-  apt_key:
-    url: "https://download.docker.com/linux/ubuntu/gpg"
-    state: present
-
-- name: Add APT repository
-  become: true
-  apt_repository:
-    repo: "deb https://download.docker.com/linux/ubuntu focal stable"
-    state: present
-
-- name: Install Docker CE
-  become: true
-  apt:
-    name: docker-ce docker-ce docker-ce-cli containerd.io docker-compose
-    state: present
-
-- name: Ensure group "docker" exists
-  become: true
-  group:
-    name: docker
-    state: present
-
-- name: Adding existing user {{ user.name }} to group docker (to run docker without sudo)
-  become: true
-  user:
-    name: "{{ user.name }}"
-    groups:
-      - docker
-    append: yes
+    name: "{{ extra_package_list }}"
+    state: latest
+    update_cache: yes

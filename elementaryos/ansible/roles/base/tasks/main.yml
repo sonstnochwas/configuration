@@ -1,48 +1,32 @@
 ---
 #------------------------------------------------------------------------------
-# base environment
+# Base packages
 #------------------------------------------------------------------------------
 
-
-#
-# python3-pip ??
-# 
-#
-- name: initialize package list
-  set_fact:
-    base_package_list:
-      - "curl"
-      - "tig"
-      - "htop"
-      - "git"
-      - "git-lfs"
-      - "rustc"
-      - "cargo"
-      - "openssl"
-      - "jq"
-      - "tree"
-      - "apt-transport-https"
-      - "ca-certificates"
-      - "gnupg"
-      - "software-properties-common"
+- name: Install additional packages
+  become: true
+  apt:
+    pkg:
+      - curl
+      - tig
+      - htop
+      - git
+      - git-lfs
+      - rustc
+      - cargo
+      - openssl
+      - jq
+      - tree
+      - apt-transport-https
+      - ca-certificates
+      - gnupg
+      - software-properties-common
+    state: present
+    update_cache: yes
+    autoremove: yes
 
 - import_tasks: user.yml
 
 - import_tasks: neovim.yml
 
 - import_tasks: tmux.yml
-
-- name: update all packages to their latest version
-  become: yes
-  apt:
-    name: "*"
-    state: latest
-    update_cache: yes
-    autoremove: yes
-
-- name: ensure packages are installed
-  become: yes
-  apt:
-    name: "{{ base_package_list }}"
-    state: latest
-    update_cache: yes

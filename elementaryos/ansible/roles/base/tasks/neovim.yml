@@ -1,10 +1,10 @@
 ---
 #------------------------------------------------------------------------------
-# install and configure NeoVim
+# NeoVim
 #------------------------------------------------------------------------------
 
-- name: create directories
-  become: yes
+- name: Ensure directory exists
+  become: true
   file:
     path: "{{ user.home }}/{{ item }}"
     state: directory
@@ -13,8 +13,8 @@
   loop:
     - ".config/nvim/colors"
 
-- name: copy configuration
-  become: yes
+- name: Copy configuration
+  become: true
   copy:
     src: "neovim/{{ item.name }}"
     dest: "{{ user.home }}/.config/nvim/{{ item.name }}"
@@ -25,6 +25,8 @@
     - { name: 'init.vim', mode: 'u+rw' }
     - { name: 'colors/nord.vim', mode: 'u+rw' }
 
-- name: add to package list
-  set_fact:
-    base_package_list: "{{ base_package_list + ['neovim'] }}"
+- name: Install additional packages
+  become: true
+  apt:
+    name: neovim
+    state: present

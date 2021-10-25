@@ -1,18 +1,17 @@
 ---
 #------------------------------------------------------------------------------
-# create group, user and home directory
-# ... and assign fish as default shell with bob the fish theme
+# User, Group and Home
 #------------------------------------------------------------------------------
 
-- name: ensure user group exists
-  become: yes
+- name: Ensure user group exists
+  become: true
   group:
     name: "{{ user.group.name }}"
     gid: "{{ user.group.id }}"
     state: "present"
 
-- name: ensure user exists
-  become: yes
+- name: Ensure user exists
+  become: true
   user:
     name: "{{ user.name }}"
     uid: "{{ user.id }}"
@@ -28,16 +27,16 @@
     ssh_key_comment: "{{ user.ssh_key.comment }}"
     state: "present"
 
-- name: shell configuration - directory
-  become: yes
+- name: Shell configuration - directory
+  become: true
   file:
     path: "{{ user.home }}/.config/fish/functions"
     state: directory
     owner: "{{ user.name }}"
     group: "{{ user.group.name }}"
 
-- name: shell configuration - copy
-  become: yes
+- name: Shell configuration - copy
+  become: true
   copy:
     src: "fish/{{ item.name }}"
     dest: "{{ user.home }}/.config/fish/{{ item.name }}"
@@ -53,6 +52,9 @@
     - { name: 'functions/bobthefish_display_colors.fish', mode: 'u+rw' }
     - { name: 'functions/fish_mode_prompt.fish', mode: 'u+rw' }
 
-- name: add to package list
-  set_fact:
-    base_package_list: "{{ base_package_list + ['fish', 'fonts-hack'] }}"
+- name: Install additional packages
+  become: true
+  apt:
+    pkg:
+      - fish
+      - fonts-hack
