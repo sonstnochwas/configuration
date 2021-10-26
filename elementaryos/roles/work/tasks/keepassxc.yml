@@ -1,3 +1,8 @@
+---
+#------------------------------------------------------------------------------
+# KeepassXC
+#------------------------------------------------------------------------------
+
 - name: Add KeepassXC Repository
   become: true
   apt_repository:
@@ -10,20 +15,3 @@
     update_cache: yes
     cache_valid_time: 7200
     state: latest
-
-- name: ensure the ~/.config/keepassxc directory is present
-  file:
-    path: "{{ user.home }}/.config/keepassxc"
-    state: directory
-
-- name: copy local keepassxc.ini to remote if exists
-  stat:
-    path: keepassxc/keepassxc.ini
-  register: keepassxcini
-
-- name: copy keepassxc configuration
-  when: keepassxcini.stat.exists
-  copy:
-    src: keepassxc/keepassxc.ini
-    dest: "{{ user.home }}/.config/keepassxc/keepassxc.ini"
-    force: yes

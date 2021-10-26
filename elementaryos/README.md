@@ -3,7 +3,7 @@
 ## Assumptions
 
 For the rest of the documentation we will assume, that user created during
-base system instalation is named `marvin_tpa` and the user created by the
+base system installation is named `marvin_tpa` and the user created by the
 playbook is called `earthling`.
 
 The system (PC/Laptop) to be installed is referenced as `TheNewOne`, the Ansible
@@ -50,33 +50,16 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 ssh-copy-id -i ~/.ssh/id_ed25519.pub marvin_tpa@TheNewOnesIPAddress
 
 # test connection
-ansible -m setup -i TheNewOnesIPAddress, -u marvin_tpa --ask-become-pass
+ansible all -m setup -i TheNewOnesIPAddress, -u marvin_tpa --ask-become-pass
 ```
 
-### Continue with ...
+## Run Ansible playbooks
 
-[Ansible installation](ansible/README.md)
-
-# Configure elementary OS 6 (Odin)
-
-## Prepare
-
-```bash
-# create key
-ssh-keygen -t ed25519 -C "your_email@example.com"
-
-# copy key
-ssh-copy-id -i ~/.ssh/id_ed25519.pub marvin@ip-address
-
-# test connection
-ansible -m setup -i ip-address, -u user-name --ask-become-pass
-```
-
-My personal Ansible playbook to install and configure installation.
+### Base system
 
 ```bash
 # install and configure system
-ansible-playbook base-playbook.yml -i ip-address, -u marvin --ask-become-pass
+ansible-playbook base.yml -i TheNewOnesIPAddress, -u marvin_tpa --ask-become-pass
 ```
 
 > **Note:** Change password of new user (default name: *earthling*)
@@ -86,15 +69,11 @@ ssh marvin@ip-address
 sudo passwd earthling
 ```
 
-## WARNING: work in progress
-
-Install additional packages for work:
+### **WIP** Additinal tool for work
 
 ```bash
-ansible-playbook work-playbook.yml -i ip-address, -u marvin --ask-become-pass
+ansible-playbook work.yml -i TheNewOnesIPAddress, -u marvin_tpa --ask-become-pass
 ```
-
-
 
 ## Additional repositories
 
@@ -108,14 +87,6 @@ Reference: [here](https://www.rust-lang.org/tools/install)
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
-
-## kubectl
-
-Reference: [here](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-kubectl-binary-with-curl-on-linux)
-
-```bash
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 ```
 
 # helm

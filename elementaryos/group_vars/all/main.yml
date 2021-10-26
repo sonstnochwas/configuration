@@ -1,4 +1,6 @@
 ---
+system:
+  ubuntu_release: "focal"
 user:
   name: "earthling"
   home: "/home/earthling"

@@ -1,132 +1,23 @@
 ---
 #------------------------------------------------------------------------------
-# extra packages
+# Install additional work related tools
 #------------------------------------------------------------------------------
 
-- name: initialize package list
-  set_fact:
-    work_package_list:
-      - remmina
-
-#------------------------------------------------------------------------------
-# Elementary OS
-#------------------------------------------------------------------------------
-
-- name: Add repository
-  become: true
-  apt_repository:
-    repo: ppa:philip.scott/pantheon-tweaks
-
-- name: Add package(s)
-  set_fact:
-    extra_package_list: "{{ extra_package_list + ['pantheon-tweaks'] }}"
-
-#------------------------------------------------------------------------------
-# Mozilla
-#------------------------------------------------------------------------------
-
-- name: Add repository for Mozilla VPN
-  become: true
-  apt_repository:
-    repo: ppa:mozillacorp/mozillavpn
-
-- name: Add package(s)
-  set_fact:
-    extra_package_list: "{{ extra_package_list + ['firefox', 'mozillavpn'] }}"
-
-#------------------------------------------------------------------------------
-# Microsoft
-#------------------------------------------------------------------------------
-
-- name: Add Microsoft apt signing key
-  become: true
-  apt_key:
-    url: https://packages.microsoft.com/keys/microsoft.asc
-    keyring: /etc/apt/trusted.gpg.d/packages.microsoft.gpg
-    state: present
-
-- name: Add vscode repository
-  become: true
-  apt_repository:
-    repo: deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main
-    state: present
-    filename: microsoft-vscode
-
-- name: Add package(s)
-  set_fact:
-    extra_package_list: "{{ extra_package_list + ['code'] }}"
-
-#------------------------------------------------------------------------------
-# Google Chrome
-#------------------------------------------------------------------------------
-
-- name: Add Apt signing key
-  become: true
-  apt_key:
-    url: "https://dl.google.com/linux/linux_signing_key.pub"
-    state: present
-
-- name: Add google chrome repository
-  become: true
-  apt_repository:
-    repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
-    state: present
-    filename: google-chrome
-
-- name: Add package(s)
-  set_fact:
-    extra_package_list: "{{ extra_package_list + ['google-chrome-stable'] }}"
-
-#------------------------------------------------------------------------------
-# Vivaldi
-#------------------------------------------------------------------------------
-
-- name: Add Vivaldi signing key
-  become: true
-  apt_key:
-    url: https://repo.vivaldi.com/archive/linux_signing_key.pub
-    state: present
-
-- name: Add vivaldi repository
-  become: true
-  apt_repository:
-    repo: deb [arch=amd64] https://repo.vivaldi.com/archive/deb/ stable main
-    state: present
-    filename: vivaldi
-
-- name: Add package(s)
-  set_fact:
-    extra_package_list: "{{ extra_package_list + ['vivaldi-stable'] }}"
-
-#------------------------------------------------------------------------------
-# Github CLI
-#------------------------------------------------------------------------------
-
-- name: Add apt signing key
-  become: true
-  apt_key:
-    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
-    keyring: /etc/apt/trusted.gpg.d/packages.github.gpg
-    state: present
-
-- name: Add vscode repository
-  become: true
-  apt_repository:
-    repo: deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.github.gpg] https://cli.github.com/packages stable main
-    state: present
-    filename: github-cli
-
-- name: Add package(s)
-  set_fact:
-    extra_package_list: "{{ extra_package_list + ['gh'] }}"
-
-#------------------------------------------------------------------------------
-# Install everything
-#------------------------------------------------------------------------------
-
-- name: ensure packages are installed
+- name: Install additional packages
   become: true
   apt:
-    name: "{{ extra_package_list }}"
-    state: latest
+    pkg:
+      - remmina
+    state: present
     update_cache: yes
+    autoremove: yes
+
+- import_tasks: microsoft.yml
+
+- import_tasks: docker-ce.yml
+
+- import_tasks: google-chrome.yml
+
+- import_tasks: hashicorp.yml
+
+- import_tasks: keepassxc.yml

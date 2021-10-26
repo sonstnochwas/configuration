@@ -1,11 +1,6 @@
 ---
 #------------------------------------------------------------------------------
-# Configure elementary OS 6
+# WIP
 #------------------------------------------------------------------------------
 
-- hosts: all
-  tasks:
-    - name: "Set up base configuration"
-      import_role:
-        name: base
-      become_method: sudo
+- import_tasks: keepassxc.yml
