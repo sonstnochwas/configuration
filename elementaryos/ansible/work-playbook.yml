@@ -1,15 +1,12 @@
 ---
-- hosts: localhost
-  connection: local
-  tasks:
+  #------------------------------------------------------------------------------
+  # Add additional packages and configuration for work
+  #------------------------------------------------------------------------------
 
-    #- name: "Configure KDE"
-    #  import_role:
-    #    name: kde
-    #  become_method: sudo
+- hosts: all
+  tasks:
 
     - name: "Install work related tools"
       import_role:
         name: work
       become_method: sudo
-
