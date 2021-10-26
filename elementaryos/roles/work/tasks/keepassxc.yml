@@ -15,3 +15,24 @@
     update_cache: yes
     cache_valid_time: 7200
     state: latest
+
+- name: Ensure directory exists
+  become: true
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".config/keepassxc"
+
+- name: Copy configuration
+  become: true
+  copy:
+    src: "keepassxc/{{ item.name }}"
+    dest: "{{ user.home }}/.config/keepassxc/{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  with_items:
+    - { name: 'keepassxc.ini', mode: 'u+rw' }
