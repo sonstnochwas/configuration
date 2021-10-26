@@ -1,11 +1,12 @@
 ---
 #------------------------------------------------------------------------------
-# Configuration
+# Configuration with dconf
+# see: https://docs.ansible.com/ansible/2.9/modules/dconf_module.html
 #------------------------------------------------------------------------------
 
 - name: Apply dconf settings.
   become_user: '{{ user.name }}'
-  community.general.dconf:
+  dconf:
     key: '{{ item.option }}'
     value: '{{ item.value }}'
   with_items: '{{ user.dconf }}'
