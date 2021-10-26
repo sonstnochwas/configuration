@@ -1,0 +1,48 @@
+---
+#------------------------------------------------------------------------------
+# Docker CE
+#------------------------------------------------------------------------------
+
+- name: Remove legacy Docker packages
+  become: true
+  apt:
+    name: "{{ package }}"
+    purge: yes
+    state: absent
+  vars:
+    package:
+    - lxc-docker
+    - docker
+    - docker-engine
+
+- name: Add APT signing key
+  become: true
+  apt_key:
+    url: "https://download.docker.com/linux/ubuntu/gpg"
+    state: present
+
+- name: Add APT repository
+  become: true
+  apt_repository:
+    repo: "deb https://download.docker.com/linux/ubuntu focal stable"
+    state: present
+
+- name: Install Docker CE
+  become: true
+  apt:
+    name: docker-ce docker-ce docker-ce-cli containerd.io docker-compose
+    state: present
+
+- name: Ensure group "docker" exists
+  become: true
+  group:
+    name: docker
+    state: present
+
+- name: Adding existing user {{ user.name }} to group docker (to run docker without sudo)
+  become: true
+  user:
+    name: "{{ user.name }}"
+    groups:
+      - docker
+    append: yes

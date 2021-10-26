@@ -8,7 +8,7 @@
 - create USB/DVD
 - install *)
 
-*) the user created during installation should not be named like the user created with ansible, because I have simply not tested it, yet.
+*) the user created during installation should not be named like the user created with ansible, because I have simply not tested it, yet. For the rest of the documentation the ansibel-user will be named `marvin` and the user created by  ansible `earthling`.
 
 ### Install and start `sshd`
 
@@ -18,11 +18,16 @@
 # install
 $ sudo apt install openssh-server
 # (optional) check status
+$ sudo systemctl status sshd
+# You should see "Active: active(running)", otherwise start sshd:
 $ sudo systemctl start sshd
 ```
 
 ... should be `active` and `running` now.
 
+### Continue with ...
+
+[Ansible installation](ansible/README.md)
 
 ## Additional repositories
 

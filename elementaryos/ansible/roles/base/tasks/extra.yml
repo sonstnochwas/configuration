@@ -32,31 +32,9 @@
 - name: Install additional packages
   become: true
   apt:
-    name: firefox mozillavpn
-    state: present
-
-
-#------------------------------------------------------------------------------
-# Google Chrome
-#------------------------------------------------------------------------------
-
-- name: Add APT signing key
-  become: true
-  apt_key:
-    url: "https://dl.google.com/linux/linux_signing_key.pub"
-    state: present
-
-- name: Add google chrome repository
-  become: true
-  apt_repository:
-    repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
-    state: present
-    filename: google-chrome
-
-- name: Install additional packages
-  become: true
-  apt:
-    name: google-chrome-stable
+    pkg:
+      - firefox
+      - mozillavpn
     state: present
 
 
@@ -82,7 +60,6 @@
   apt:
     name: vivaldi-stable
     state: present
-    extra_package_list: "{{ extra_package_list + [''] }}"
 
 #------------------------------------------------------------------------------
 # Github CLI
@@ -95,7 +72,7 @@
     keyring: /etc/apt/trusted.gpg.d/packages.github.gpg
     state: present
 
-- name: Add vscode repository
+- name: Add Gtihub CLI repository
   become: true
   apt_repository:
     repo: deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.github.gpg] https://cli.github.com/packages stable main
@@ -119,10 +96,10 @@
     keyring: /etc/apt/trusted.gpg.d/packages.kubernetes.gpg
     state: present
 
-- name: Add vscode repository
+- name: Add kubernetes repository
   become: true
   apt_repository:
-    repo: deb [/etc/apt/trusted.gpg.d/packages.kubernetes.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
+    repo: deb [signed-by=/etc/apt/trusted.gpg.d/packages.kubernetes.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
     state: present
     filename: kubernetes-kubectl
 
@@ -131,54 +108,6 @@
   apt:
     name: kubectl
     state: present
-
-#------------------------------------------------------------------------------
-# Docker CE
-#------------------------------------------------------------------------------
-
-- name: Remove legacy Docker packages
-  become: true
-  apt:
-    name: "{{ package }}"
-    purge: yes
-    state: absent
-  vars:
-    package:
-    - lxc-docker
-    - docker
-    - docker-engine
-
-- name: Add APT signing key
-  become: true
-  apt_key:
-    url: "https://download.docker.com/linux/ubuntu/gpg"
-    state: present
-
-- name: Add APT repository
-  become: true
-  apt_repository:
-    repo: "deb https://download.docker.com/linux/ubuntu focal stable"
-    state: present
-
-- name: Install Docker CE
-  become: true
-  apt:
-    name: docker-ce docker-ce docker-ce-cli containerd.io docker-compose
-    state: present
-
-- name: Ensure group "docker" exists
-  become: true
-  group:
-    name: docker
-    state: present
-
-- name: Adding existing user {{ user.name }} to group docker (to run docker without sudo)
-  become: true
-  user:
-    name: "{{ user.name }}"
-    groups:
-      - docker
-    append: yes
 
 
 #------------------------------------------------------------------------------
