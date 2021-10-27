@@ -1,0 +1,162 @@
+---
+#------------------------------------------------------------------------------
+# Elementary OS
+#------------------------------------------------------------------------------
+
+- name: Add repository for pantheon-tweaks
+  become: true
+  apt_repository:
+    repo: ppa:philip.scott/pantheon-tweaks
+
+- name: Install additional packages
+  become: true
+  apt:
+    pkg:
+      - pantheon-tweaks
+      - dconf-editor
+      - ubuntu-restricted-extras
+      - libavcodec-extra
+      - ffmpeg
+    state: present
+
+
+#------------------------------------------------------------------------------
+# Mozilla
+#------------------------------------------------------------------------------
+
+- name: Add repository for Mozilla VPN
+  become: true
+  apt_repository:
+    repo: ppa:mozillacorp/mozillavpn
+
+- name: Install additional packages
+  become: true
+  apt:
+    pkg:
+      - firefox
+      - mozillavpn
+    state: present
+
+
+#------------------------------------------------------------------------------
+# Vivaldi
+#------------------------------------------------------------------------------
+
+- name: Add APT signing key
+  become: true
+  apt_key:
+    url: https://repo.vivaldi.com/archive/linux_signing_key.pub
+    state: present
+
+- name: Add vivaldi repository
+  become: true
+  apt_repository:
+    repo: deb [arch=amd64] https://repo.vivaldi.com/archive/deb/ stable main
+    state: present
+    filename: vivaldi
+
+- name: Install additional packages
+  become: true
+  apt:
+    name: vivaldi-stable
+    state: present
+
+#------------------------------------------------------------------------------
+# Github CLI
+#------------------------------------------------------------------------------
+
+- name: Add apt signing key
+  become: true
+  apt_key:
+    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    keyring: /etc/apt/trusted.gpg.d/packages.github.gpg
+    state: present
+
+- name: Add Gtihub CLI repository
+  become: true
+  apt_repository:
+    repo: deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.github.gpg] https://cli.github.com/packages stable main
+    state: present
+    filename: github-cli
+
+- name: Install additional packages
+  become: true
+  apt:
+    name: gh
+
+
+#------------------------------------------------------------------------------
+# Kubectl
+#------------------------------------------------------------------------------
+
+- name: Add APT signing key
+  become: true
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    keyring: /etc/apt/trusted.gpg.d/packages.kubernetes.gpg
+    state: present
+
+- name: Add kubernetes repository
+  become: true
+  apt_repository:
+    repo: deb [signed-by=/etc/apt/trusted.gpg.d/packages.kubernetes.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: kubernetes-kubectl
+
+- name: Install additional packages
+  become: true
+  apt:
+    name: kubectl
+    state: present
+
+
+#------------------------------------------------------------------------------
+# Atom
+#------------------------------------------------------------------------------
+
+- name: Add APT signing key
+  become: true
+  apt_key:
+    url: https://packagecloud.io/AtomEditor/atom/gpgkey
+    keyring: /etc/apt/trusted.gpg.d/packages.atom.gpg
+    state: present
+
+- name: Add Atom repository
+  become: true
+  apt_repository:
+    repo: deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main
+    state: present
+    filename: atom-editor
+
+- name: Install additional packages
+  become: true
+  apt:
+    name: atom
+    state: present
+
+- name: Ensure directory exists
+  become: true
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".config/Atom"
+
+- name: Copy configuration
+  become: true
+  copy:
+    src: "atom/{{ item.name }}"
+    dest: "{{ user.home }}/.config/Atom/{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  with_items:
+    - { name: 'Preferences', mode: 'u+rw' }
+
+- name: Install additional packages
+  become: true
+  apt:
+    name: neovim
+    state: present

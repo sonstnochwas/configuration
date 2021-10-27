@@ -1,0 +1,25 @@
+---
+#------------------------------------------------------------------------------
+# Install additional work related tools
+#------------------------------------------------------------------------------
+
+- name: Install additional packages
+  become: true
+  apt:
+    pkg:
+      - remmina
+    state: present
+    update_cache: yes
+    autoremove: yes
+
+- import_tasks: microsoft.yml
+
+- import_tasks: docker-ce.yml
+
+- import_tasks: google-chrome.yml
+
+- import_tasks: hashicorp.yml
+
+- import_tasks: keepassxc.yml
+
+- import_tasks: slack.yml

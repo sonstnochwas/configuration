@@ -1,0 +1,43 @@
+---
+system:
+  ubuntu_release: "focal"
+  slack_version: "4.20.0"
+  timezone: "Europe/Berlin"
+  locale: "en_US.UTF-8"
+  keyboard:
+    layout: "us"
+    variant: "altgr-intl"
+user:
+  name: "earthling"
+  home: "/home/earthling"
+  id: 1177
+  shell: "/usr/bin/fish"
+  group:
+    name: "earthling"
+    id: 1177
+  ssh_key:
+    file: ".ssh/sourcectrl"
+    comment: "generated for source control"
+    bits: 4096
+    type: "ed25519"
+  dconf:
+    - option: /io/elementary/terminal/settings/background
+      value: "'rgb(0,0,0)'"
+    - option: /io/elementary/files/preferences/show-hiddenfiles
+      value: 'true'
+    - option: /io/elementary/desktop/wingpanel/power/show-percentage
+      value: 'true'
+    - option: /io/elementary/desktop/wingpanel/keyboard/capslock
+      value: 'true'
+    - option: /org/gnome/desktop/peripherals/touchpad/natural-scroll
+      value: 'true'
+    - option: /org/gnome/desktop/privacy/remove-old-temp-files
+      value: 'true'
+    - option: /org/gnome/settings-daemon/plugins/color/night-light-enabled
+      value: 'true'
+    - option: /org/gnome/desktop/interface/monospace-font-name
+      value: "'Hack 10'"
+    - option: /org/gnome/desktop/interface/clock-format
+      value: "'24h'"
+    - option: /io/elementary/desktop/agent-geoclue2/location-enabled
+      value: 'false'

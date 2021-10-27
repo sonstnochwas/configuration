@@ -1,0 +1,32 @@
+---
+#------------------------------------------------------------------------------
+# NeoVim
+#------------------------------------------------------------------------------
+
+- name: Ensure directory exists
+  become: true
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".config/nvim/colors"
+
+- name: Copy configuration
+  become: true
+  copy:
+    src: "neovim/{{ item.name }}"
+    dest: "{{ user.home }}/.config/nvim/{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  with_items:
+    - { name: 'init.vim', mode: 'u+rw' }
+    - { name: 'colors/nord.vim', mode: 'u+rw' }
+
+- name: Install additional packages
+  become: true
+  apt:
+    name: neovim
+    state: present

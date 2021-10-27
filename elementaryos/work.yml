@@ -1,0 +1,12 @@
+---
+  #------------------------------------------------------------------------------
+  # Add additional packages and configuration for work
+  #------------------------------------------------------------------------------
+
+- hosts: all
+  tasks:
+
+    - name: "Install work related tools"
+      import_role:
+        name: work
+      become_method: sudo

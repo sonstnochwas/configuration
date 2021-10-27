@@ -1,0 +1,37 @@
+---
+#------------------------------------------------------------------------------
+# Configure elementary OS 6
+#------------------------------------------------------------------------------
+
+- name: Install additional packages
+  become: true
+  apt:
+    pkg:
+      - curl
+      - tig
+      - htop
+      - git
+      - git-lfs
+      - rustc
+      - cargo
+      - openssl
+      - jq
+      - tree
+      - apt-transport-https
+      - ca-certificates
+      - gnupg
+      - software-properties-common
+      - python3-psutil
+    state: present
+    update_cache: yes
+    autoremove: yes
+
+- import_tasks: user.yml
+
+- import_tasks: neovim.yml
+
+- import_tasks: tmux.yml
+
+- import_tasks: extra.yml
+
+- import_tasks: dconf.yml

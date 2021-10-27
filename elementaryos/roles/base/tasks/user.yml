@@ -1,0 +1,60 @@
+---
+#------------------------------------------------------------------------------
+# User, Group and Home
+#------------------------------------------------------------------------------
+
+- name: Ensure user group exists
+  become: true
+  group:
+    name: "{{ user.group.name }}"
+    gid: "{{ user.group.id }}"
+    state: "present"
+
+- name: Ensure user exists
+  become: true
+  user:
+    name: "{{ user.name }}"
+    uid: "{{ user.id }}"
+    home: "{{ user.home }}"
+    shell: "{{ user.shell }}"
+    group: "{{ user.group.name}}"
+    groups:
+      - "sudo"
+    #generate_ssh_key: yes
+    #ssh_key_type: "{{ user.ssh_key.type }}"
+    #ssh_key_bits: "{{ user.ssh_key.bits }}"
+    #ssh_key_file: "{{ user.home }}/{{ user.ssh_key.file }}"
+    #ssh_key_comment: "{{ user.ssh_key.comment }}"
+    state: "present"
+
+- name: Shell configuration - directory
+  become: true
+  file:
+    path: "{{ user.home }}/.config/fish/functions"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+
+- name: Shell configuration - copy
+  become: true
+  copy:
+    src: "fish/{{ item.name }}"
+    dest: "{{ user.home }}/.config/fish/{{ item.name }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { name: 'config.fish', mode: 'u+rw' }
+    - { name: 'functions/__bobthefish_colors.fish', mode: 'u+rw' }
+    - { name: 'functions/__bobthefish_glyphs.fish',  mode: 'u+rw' }
+    - { name: 'functions/fish_prompt.fish', mode: 'u+rw' }
+    - { name: 'functions/__bobthefish_display_colors.fish', mode: 'u+rw' }
+    - { name: 'functions/fish_greeting.fish', mode: 'u+rw' }
+    - { name: 'functions/fish_title.fish', mode: 'u+rw' }
+    - { name: 'functions/bobthefish_display_colors.fish', mode: 'u+rw' }
+    - { name: 'functions/fish_mode_prompt.fish', mode: 'u+rw' }
+
+- name: Install additional packages
+  become: true
+  apt:
+    pkg:
+      - fish
+      - fonts-hack

@@ -1,0 +1,7 @@
+---
+- name: Get latest release of a public repository
+  community.general.github_release:
+    user: cli
+    repo: cli
+    action: latest_release
+  register: gh_latest

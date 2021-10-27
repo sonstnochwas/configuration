@@ -1,0 +1,12 @@
+---
+#------------------------------------------------------------------------------
+# Slack
+#------------------------------------------------------------------------------
+
+- name: Install Slack from deb package from Internet
+  become: true
+  apt:
+    deb: "https://downloads.slack-edge.com/releases/linux/{{ system.slack_version }}/prod/x64/slack-desktop-{{ system.slack_version }}-amd64.deb"
+  tags:
+  - slack
+  become: true
