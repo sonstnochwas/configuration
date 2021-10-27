@@ -13,21 +13,21 @@
 - name: Add vscode repository
   become: true
   apt_repository:
-    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
+    repo: "deb [arch=amd64] https://packages.microsoft.com/repos/code stable main"
     state: present
     filename: microsoft-vscode
 
 - name: Add teams repository
   become: true
   apt_repository:
-    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/ms-teams stable main"
+    repo: "deb [arch=amd64] https://packages.microsoft.com/repos/ms-teams stable main"
     state: present
     filename: microsoft-teams
 
 - name: Add azure-cli repository
   become: true
   apt_repository:
-    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/azure-cli {{ system.ubuntu_release }} main"
+    repo: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli {{ system.ubuntu_release }} main"
     state: present
     filename: microsoft-azure-cli
 

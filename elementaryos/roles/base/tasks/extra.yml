@@ -3,7 +3,7 @@
 # Elementary OS
 #------------------------------------------------------------------------------
 
-- name: Add repository
+- name: Add repository for pantheon-tweaks
   become: true
   apt_repository:
     repo: ppa:philip.scott/pantheon-tweaks

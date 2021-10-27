@@ -3,7 +3,7 @@
 ## Assumptions
 
 For the rest of the documentation we will assume, that user created during
-base system installation is named `marvin_tpa` and the user created by the
+base system installation is named `automation` and the user created by the
 playbook is called `earthling`.
 
 The system (PC/Laptop) to be installed is referenced as `TheNewOne`, the Ansible
@@ -47,10 +47,10 @@ $ hostname -I
 ssh-keygen -t ed25519 -C "your_email@example.com"
 
 # copy key
-ssh-copy-id -i ~/.ssh/id_ed25519.pub marvin_tpa@TheNewOnesIPAddress
+ssh-copy-id -i ~/.ssh/id_ed25519.pub automation@TheNewOnesIPAddress
 
 # test connection
-ansible all -m setup -i TheNewOnesIPAddress, -u marvin_tpa --ask-become-pass
+ansible all -m setup -i TheNewOnesIPAddress, -u automation --ask-become-pass
 ```
 
 ## Run Ansible playbooks
@@ -59,20 +59,20 @@ ansible all -m setup -i TheNewOnesIPAddress, -u marvin_tpa --ask-become-pass
 
 ```bash
 # install and configure system
-ansible-playbook base.yml -i TheNewOnesIPAddress, -u marvin_tpa --ask-become-pass
+ansible-playbook base.yml -i TheNewOnesIPAddress, -u automation --ask-become-pass
 ```
 
 > **Note:** Change password of new user (default name: *earthling*)
 
 ```bash
-ssh marvin@ip-address
+ssh automation@ip-address
 sudo passwd earthling
 ```
 
-### **WIP** Additinal tool for work
+### Additional tool for work
 
 ```bash
-ansible-playbook work.yml -i TheNewOnesIPAddress, -u marvin_tpa --ask-become-pass
+ansible-playbook work.yml -i TheNewOnesIPAddress, -u automation --ask-become-pass
 ```
 
 ## Additional repositories
@@ -80,14 +80,6 @@ ansible-playbook work.yml -i TheNewOnesIPAddress, -u marvin_tpa --ask-become-pas
 - [Mozilla VPN](https://support.mozilla.org/en-US/kb/how-install-mozilla-vpn-linux-computer)
 - [Github CLI](https://github.com/cli/cli/blob/trunk/docs/install_linux.md#official-sources)
 - [Docker CE](https://docs.docker.com/engine/install/ubuntu/)
-
-## Rust
-
-Reference: [here](https://www.rust-lang.org/tools/install)
-
-```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
 
 # helm
 
