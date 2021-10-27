@@ -133,3 +133,30 @@
   apt:
     name: atom
     state: present
+
+- name: Ensure directory exists
+  become: true
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".config/Atom"
+
+- name: Copy configuration
+  become: true
+  copy:
+    src: "atom/{{ item.name }}"
+    dest: "{{ user.home }}/.config/Atom/{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  with_items:
+    - { name: 'Preferences', mode: 'u+rw' }
+
+- name: Install additional packages
+  become: true
+  apt:
+    name: neovim
+    state: present

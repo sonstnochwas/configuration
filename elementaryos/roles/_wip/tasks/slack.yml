@@ -1,7 +1,12 @@
-#- name: Install Slack from deb package from Internet
-#  apt:
-#    deb: https://downloads.slack-edge.com/linux_releases/slack-desktop-4.0.2-amd64.deb
-#    deb: https://downloads.slack-edge.com/releases/linux/4.20.0/prod/x64/slack-4.20.0-0.1.fc21.x86_64.rpm
-#  tags:
-#  - slack
-#  become: true
+---
+#------------------------------------------------------------------------------
+# Slack
+#------------------------------------------------------------------------------
+
+- name: Install Slack from deb package from Internet
+  become: true
+  apt:
+    deb: "https://downloads.slack-edge.com/releases/linux/{{ system.slack_version }}/prod/x64/slack-desktop-{{ system.slack_version }}-amd64.deb"
+  tags:
+  - slack
+  become: true

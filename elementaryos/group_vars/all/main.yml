@@ -1,6 +1,7 @@
 ---
 system:
   ubuntu_release: "focal"
+  slack_version: "4.20.0"
 user:
   name: "earthling"
   home: "/home/earthling"
