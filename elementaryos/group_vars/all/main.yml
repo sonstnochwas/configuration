@@ -35,5 +35,6 @@ user:
       value: "'24h'"
     - option: /io/elementary/desktop/agent-geoclue2/location-enabled
       value: 'false'
-    - option: /net/launchpad/plank/docks/dock1/dock-items
-      value: "['gala-multitaskingview.dockitem', 'io.elementary.appcenter.dockitem', 'io.elementary.switchboard.dockitem', 'org.gnome.Epiphany.dockitem', 'io.elementary.tasks.dockitem']"
+# --> does not work :-(
+#    - option: /net/launchpad/plank/docks/dock1/dock-items
+#      value: "['gala-multitaskingview.dockitem', 'io.elementary.appcenter.dockitem', 'io.elementary.switchboard.dockitem', 'org.gnome.Epiphany.dockitem', 'io.elementary.tasks.dockitem']"
