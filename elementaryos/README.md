@@ -69,7 +69,7 @@ ssh automation@ip-address
 sudo passwd earthling
 ```
 
-### Additional tool for work
+### Additional tools for work
 
 ```bash
 ansible-playbook work.yml -i TheNewOnesIPAddress, -u automation --ask-become-pass
