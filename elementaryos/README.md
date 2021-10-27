@@ -75,13 +75,7 @@ sudo passwd earthling
 ansible-playbook work.yml -i TheNewOnesIPAddress, -u automation --ask-become-pass
 ```
 
-## Additional repositories
-
-- [Mozilla VPN](https://support.mozilla.org/en-US/kb/how-install-mozilla-vpn-linux-computer)
-- [Github CLI](https://github.com/cli/cli/blob/trunk/docs/install_linux.md#official-sources)
-- [Docker CE](https://docs.docker.com/engine/install/ubuntu/)
-
-# helm
+## TODO: helm
 
 Reference: [here](https://helm.sh/docs/intro/install/#from-script)
 
