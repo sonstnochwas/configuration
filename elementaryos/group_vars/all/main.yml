@@ -2,6 +2,11 @@
 system:
   ubuntu_release: "focal"
   slack_version: "4.20.0"
+  timezone: "Europe/Berlin"
+  locale: "en_US.UTF-8"
+  keyboard:
+    layout: "us"
+    variant: "altgr-intl"
 user:
   name: "earthling"
   home: "/home/earthling"
@@ -36,6 +41,3 @@ user:
       value: "'24h'"
     - option: /io/elementary/desktop/agent-geoclue2/location-enabled
       value: 'false'
-# --> does not work :-(
-#    - option: /net/launchpad/plank/docks/dock1/dock-items
-#      value: "['gala-multitaskingview.dockitem', 'io.elementary.appcenter.dockitem', 'io.elementary.switchboard.dockitem', 'org.gnome.Epiphany.dockitem', 'io.elementary.tasks.dockitem']"

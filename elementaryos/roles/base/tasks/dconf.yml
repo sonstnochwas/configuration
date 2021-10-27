@@ -4,7 +4,8 @@
 # see: https://docs.ansible.com/ansible/2.9/modules/dconf_module.html
 #------------------------------------------------------------------------------
 
-- name: Apply dconf settings.
+- name: Apply dconf settings
+  become: true
   become_user: '{{ user.name }}'
   dconf:
     key: '{{ item.option }}'

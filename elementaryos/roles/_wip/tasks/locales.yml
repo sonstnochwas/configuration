@@ -1,0 +1,30 @@
+---
+#------------------------------------------------------------------------------
+# WIP
+#
+#  vars:
+#    locale: en_US.UTF-8
+#    timezone: Europe/Berlin
+#------------------------------------------------------------------------------
+
+- name: set locale
+  become: true
+  command: "/usr/sbin/update-locale LANG={{ system.locale }} LC_ALL={{ system.locale }}"
+
+- name: set /etc/localtime
+  file:
+    src: "/usr/share/zoneinfo/{{ system.timezone }}"
+    dest: "/etc/localtime"
+    state: link
+
+- name: set /etc/timezone
+  template:
+    src: templates/etc/timezone
+    dest: /etc/timezone
+  notify: update tzdata
+
+- name: update tzdata
+  command: "/usr/sbin/dpkg-reconfigure --frontend noninteractive tzdata"
+
+- name: update tzdata
+  command: "/usr/sbin/dpkg-reconfigure --frontend noninteractive tzdata"
