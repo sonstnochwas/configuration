@@ -16,15 +16,13 @@ user:
     type: "ed25519"
   dconf:
     - option: /io/elementary/terminal/settings/background
-      value: 'rgb(0,0,0)'
+      value: "'rgb(0,0,0)'"
     - option: /io/elementary/files/preferences/show-hiddenfiles
       value: 'true'
     - option: /io/elementary/desktop/wingpanel/power/show-percentage
       value: 'true'
     - option: /io/elementary/desktop/wingpanel/keyboard/capslock
       value: 'true'
-    - option: /net/launchpad/plank/docks/dock1/dock-items
-      value: "['gala-multitaskingview.dockitem', 'io.elementary.appcenter.dockitem', 'io.elementary.switchboard.dockitem', 'org.gnome.Epiphany.dockitem', 'io.elementary.tasks.dockitem']"
     - option: /org/gnome/desktop/peripherals/touchpad/natural-scroll
       value: 'true'
     - option: /org/gnome/desktop/privacy/remove-old-temp-files
@@ -32,8 +30,10 @@ user:
     - option: /org/gnome/settings-daemon/plugins/color/night-light-enabled
       value: 'true'
     - option: /org/gnome/desktop/interface/monospace-font-name
-      value: 'Hack 10'
+      value: "'Hack 10'"
     - option: /org/gnome/desktop/interface/clock-format
-      value: '24h'
+      value: "'24h'"
     - option: /io/elementary/desktop/agent-geoclue2/location-enabled
       value: 'false'
+    - option: /net/launchpad/plank/docks/dock1/dock-items
+      value: "['gala-multitaskingview.dockitem', 'io.elementary.appcenter.dockitem', 'io.elementary.switchboard.dockitem', 'org.gnome.Epiphany.dockitem', 'io.elementary.tasks.dockitem']"
