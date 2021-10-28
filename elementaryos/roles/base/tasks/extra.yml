@@ -126,3 +126,36 @@
     group: "{{ user.group.name }}"
   with_items:
     - { name: 'Preferences', mode: 'u+rw' }
+
+
+#------------------------------------------------------------------------------
+# bat config/theme
+#------------------------------------------------------------------------------
+
+- name: Install additional packages
+  become: true
+  apt:
+    name: bat
+    state: present
+
+- name: Ensure directory exists
+  become: true
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".config/bat"
+
+- name: Copy configuration
+  become: true
+  copy:
+    src: "bat/{{ item.name }}"
+    dest: "{{ user.home }}/.config/bat/{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  with_items:
+    - { name: 'config', mode: 'u+rw' }
+
