@@ -1,0 +1,22 @@
+---
+#------------------------------------------------------------------------------
+# k3x (https://github.com/inercia/k3x)
+#------------------------------------------------------------------------------
+
+- name: Add the flathub flatpak repository remote to the user installation
+  become: true
+  become_user: '{{ user.name }}'
+  flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: user
+
+- name: Install k3x from flathub
+  become: true
+  become_user: '{{ user.name }}'
+  flatpak:
+    name: com.github.inercia.k3x.flatpak
+    state: present
+    remote: flathub
+    method: user
