@@ -35,3 +35,5 @@
 - import_tasks: extra.yml
 
 - import_tasks: dconf.yml
+
+- import_tasks: cloud-dev.yml

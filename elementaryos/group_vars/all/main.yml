@@ -1,5 +1,6 @@
 ---
 system:
+  arch: "amd64"
   ubuntu_release: "focal"
   slack_version: "4.20.0"
   timezone: "Europe/Berlin"

@@ -51,9 +51,8 @@
 - name: Add vivaldi repository
   become: true
   apt_repository:
-    repo: deb [arch=amd64] https://repo.vivaldi.com/archive/deb/ stable main
+    repo: deb [arch={{ system.arch }}] https://repo.vivaldi.com/archive/deb/ stable main
     state: present
-    filename: vivaldi
 
 - name: Install additional packages
   become: true
@@ -75,39 +74,13 @@
 - name: Add Gtihub CLI repository
   become: true
   apt_repository:
-    repo: deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.github.gpg] https://cli.github.com/packages stable main
+    repo: deb [arch={{ system.arch }} signed-by=/etc/apt/trusted.gpg.d/packages.github.gpg] https://cli.github.com/packages stable main
     state: present
-    filename: github-cli
 
 - name: Install additional packages
   become: true
   apt:
     name: gh
-
-
-#------------------------------------------------------------------------------
-# Kubectl
-#------------------------------------------------------------------------------
-
-- name: Add APT signing key
-  become: true
-  apt_key:
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    keyring: /etc/apt/trusted.gpg.d/packages.kubernetes.gpg
-    state: present
-
-- name: Add kubernetes repository
-  become: true
-  apt_repository:
-    repo: deb [signed-by=/etc/apt/trusted.gpg.d/packages.kubernetes.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
-    state: present
-    filename: kubernetes-kubectl
-
-- name: Install additional packages
-  become: true
-  apt:
-    name: kubectl
-    state: present
 
 
 #------------------------------------------------------------------------------
@@ -124,9 +97,8 @@
 - name: Add Atom repository
   become: true
   apt_repository:
-    repo: deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main
+    repo: deb [arch={{ system.arch }}] https://packagecloud.io/AtomEditor/atom/any/ any main
     state: present
-    filename: atom-editor
 
 - name: Install additional packages
   become: true
@@ -154,9 +126,3 @@
     group: "{{ user.group.name }}"
   with_items:
     - { name: 'Preferences', mode: 'u+rw' }
-
-- name: Install additional packages
-  become: true
-  apt:
-    name: neovim
-    state: present

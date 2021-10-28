@@ -20,11 +20,6 @@
     group: "{{ user.group.name}}"
     groups:
       - "sudo"
-    #generate_ssh_key: yes
-    #ssh_key_type: "{{ user.ssh_key.type }}"
-    #ssh_key_bits: "{{ user.ssh_key.bits }}"
-    #ssh_key_file: "{{ user.home }}/{{ user.ssh_key.file }}"
-    #ssh_key_comment: "{{ user.ssh_key.comment }}"
     state: "present"
 
 - name: Shell configuration - directory
