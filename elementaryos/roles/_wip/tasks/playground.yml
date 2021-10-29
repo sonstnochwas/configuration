@@ -16,7 +16,7 @@
   become: true
   become_user: '{{ user.name }}'
   flatpak:
-    name: com.github.inercia.k3x.flatpak
+    name: com.github.inercia.k3x
     state: present
     remote: flathub
     method: user
