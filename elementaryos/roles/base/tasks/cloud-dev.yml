@@ -1,0 +1,141 @@
+---
+#------------------------------------------------------------------------------
+# Docker CE
+#------------------------------------------------------------------------------
+
+- name: Remove legacy Docker packages
+  become: true
+  apt:
+    name: "{{ package }}"
+    purge: yes
+    state: absent
+  vars:
+    package:
+    - lxc-docker
+    - docker
+    - docker-engine
+
+- name: Add APT signing key
+  become: true
+  apt_key:
+    url: "https://download.docker.com/linux/ubuntu/gpg"
+    state: present
+
+- name: Add APT repository
+  become: true
+  apt_repository:
+    repo: "deb https://download.docker.com/linux/ubuntu {{ system.ubuntu_release }} stable"
+    state: present
+
+- name: Install Docker CE
+  become: true
+  apt:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose
+    state: present
+
+- name: Ensure group "docker" exists
+  become: true
+  group:
+    name: docker
+    state: present
+
+- name: Adding existing user {{ user.name }} to group docker (to run docker without sudo)
+  become: true
+  user:
+    name: "{{ user.name }}"
+    groups:
+      - docker
+    append: yes
+
+- name: Disable and stop docker service (start manually when needed)
+  become: true
+  systemd:
+    state: stopped
+    enabled: no
+    name: docker
+
+
+#------------------------------------------------------------------------------
+# Kubectl
+#------------------------------------------------------------------------------
+
+- name: Add APT signing key
+  become: true
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    keyring: /etc/apt/trusted.gpg.d/packages.kubernetes.gpg
+    state: present
+
+- name: Add kubernetes repository
+  become: true
+  apt_repository:
+    repo: deb [arch={{ system.arch }} signed-by=/etc/apt/trusted.gpg.d/packages.kubernetes.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: kubernetes-kubectl
+
+- name: Install additional packages
+  become: true
+  apt:
+    name: kubectl
+    state: present
+
+
+#------------------------------------------------------------------------------
+# helm 3
+#------------------------------------------------------------------------------
+
+- name: "Check for latest version"
+  uri:
+    url: https://api.github.com/repos/helm/helm/releases/latest
+    return_content: true
+  register: latest_release
+
+- name: "Download and unarchive helm version {{ latest_release.json.tag_name }}"
+  unarchive:
+    src: "https://get.helm.sh/helm-{{ latest_release.json.tag_name }}-linux-{{ system.arch }}.tar.gz"
+    dest: /tmp/
+    remote_src: yes
+
+- name: "Copy binary to /usr/local/bin"
+  become: true
+  copy:
+    src: "/tmp/linux-{{ system.arch }}/helm"
+    dest: "/usr/local/bin/helm"
+    remote_src: yes
+    mode: u+rwx,g+rx,o+rx
+
+
+#------------------------------------------------------------------------------
+# k3d (https://github.com/rancher/k3d)
+#------------------------------------------------------------------------------
+
+- name: "Check for latest version"
+  uri:
+    url: https://api.github.com/repos/rancher/k3d/releases/latest
+    return_content: true
+  register: latest_release
+
+- name: "Download k3d version {{ latest_release.json.tag_name }} and copy it to /usr/local/bin/"
+  become: true
+  get_url:
+    url: "https://github.com/rancher/k3d/releases/download/{{ latest_release.json.tag_name }}/k3d-linux-{{ system.arch }}"
+    dest: /usr/local/bin/k3d
+    mode: u+rwx,g+rx,o+rx
+
+
+#------------------------------------------------------------------------------
+# k3x (https://github.com/inercia/k3x)
+#------------------------------------------------------------------------------
+#
+#- name: Install k3x from flathub
+#  become: true
+#  become_user: '{{ user.name }}'
+#  flatpak:
+#    name: com.github.inercia.k3x.flatpak
+#    state: present
+#    remote: flathub
+#    method: user

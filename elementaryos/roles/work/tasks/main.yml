@@ -14,8 +14,6 @@
 
 - import_tasks: microsoft.yml
 
-- import_tasks: docker-ce.yml
-
 - import_tasks: google-chrome.yml
 
 - import_tasks: hashicorp.yml

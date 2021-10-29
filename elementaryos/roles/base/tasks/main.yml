@@ -7,21 +7,21 @@
   become: true
   apt:
     pkg:
-      - curl
-      - tig
-      - htop
-      - git
-      - git-lfs
-      - rustc
-      - cargo
-      - openssl
-      - jq
-      - tree
       - apt-transport-https
       - ca-certificates
+      - cargo
+      - curl
+      - git
+      - git-lfs
       - gnupg
-      - software-properties-common
+      - htop
+      - jq
+      - openssl
       - python3-psutil
+      - rustc
+      - software-properties-common
+      - tig
+      - tree
     state: present
     update_cache: yes
     autoremove: yes
@@ -35,3 +35,5 @@
 - import_tasks: extra.yml
 
 - import_tasks: dconf.yml
+
+- import_tasks: cloud-dev.yml
