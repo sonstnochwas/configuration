@@ -1,0 +1,42 @@
+---
+#------------------------------------------------------------------------------
+# base environment
+#------------------------------------------------------------------------------
+
+- name: speed up dnf
+  become: yes
+  ini_file:
+    path: /etc/dnf/dnf.conf
+    section: main
+    option: "fastestmirror"
+    value: "true"
+
+- name: update system
+  become: yes
+  dnf:
+    name: '*'
+    state: latest
+
+- name: initialize package list
+  become: yes
+  dnf:
+    name:
+      - tig
+      - htop
+      - git
+      - git-lfs
+      - rust
+      - cargo
+      - python3-psutil
+      - openssl
+      - jq
+      - tree
+      - bat
+
+- import_tasks: user.yml
+
+- import_tasks: terminal.yml
+
+- import_tasks: extra.yml
+
+- import_tasks: cloud-dev.yml

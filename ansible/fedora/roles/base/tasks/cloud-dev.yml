@@ -1,0 +1,154 @@
+---
+#------------------------------------------------------------------------------
+# Docker CE
+#------------------------------------------------------------------------------
+
+#- name: Remove legacy Docker packages
+#  become: true
+#  dnf:
+#    name: "{{ package }}"
+#    autoremove: yes
+#    state: absent
+#  vars:
+#    package:
+#    - lxc-docker
+#    - docker
+#    - docker-engine
+
+- name: Remove legacy Docker packages
+  become: true
+  dnf:
+    name:
+      - docker
+      - docker-client
+      - docker-client-latest
+      - docker-common
+      - docker-latest
+      - docker-latest-logrotate
+      - docker-logrotate
+      - docker-selinux
+      - docker-engine-selinux
+      - docker-engine
+    autoremove: yes
+    state: absent
+
+
+- name: add teams repository
+  become: yes
+  yum_repository:
+    name: docker-ce-stable
+    description: Docker CE Stable
+    baseurl: https://download.docker.com/linux/fedora/$releasever/$basearch/stable
+    gpgkey: https://download.docker.com/linux/fedora/gpg
+
+- name: Install Docker CE
+  become: true
+  dnf:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose
+    state: present
+
+- name: Ensure group "docker" exists
+  become: true
+  group:
+    name: docker
+    state: present
+
+- name: Adding existing user {{ user.name }} to group docker (to run docker without sudo)
+  become: true
+  user:
+    name: "{{ user.name }}"
+    groups:
+      - docker
+    append: yes
+
+- name: Disable and stop docker service (start manually when needed)
+  become: true
+  systemd:
+    state: stopped
+    enabled: no
+    name: docker
+
+
+#------------------------------------------------------------------------------
+# Kubectl
+#------------------------------------------------------------------------------
+
+- name: add kubernetes repository
+  become: yes
+  yum_repository:
+    name: kubernetes
+    description: Kubernetes repository
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+
+- name: Install additional packages
+  become: true
+  dnf:
+    name: kubectl
+    state: present
+
+
+#------------------------------------------------------------------------------
+# helm 3
+#------------------------------------------------------------------------------
+
+- name: "Check for latest version"
+  uri:
+    url: https://api.github.com/repos/helm/helm/releases/latest
+    return_content: true
+  register: latest_release
+
+- name: "Download and unarchive helm version {{ latest_release.json.tag_name }}"
+  unarchive:
+    src: "https://get.helm.sh/helm-{{ latest_release.json.tag_name }}-linux-{{ system.arch }}.tar.gz"
+    dest: /tmp/
+    remote_src: yes
+
+- name: "Copy binary to /usr/local/bin"
+  become: true
+  copy:
+    src: "/tmp/linux-{{ system.arch }}/helm"
+    dest: "/usr/local/bin/helm"
+    remote_src: yes
+    mode: u+rwx,g+rx,o+rx
+
+
+#------------------------------------------------------------------------------
+# k3d (https://github.com/rancher/k3d)
+#------------------------------------------------------------------------------
+
+- name: "Check for latest version"
+  uri:
+    url: https://api.github.com/repos/rancher/k3d/releases/latest
+    return_content: true
+  register: latest_release
+
+- name: "Download k3d version {{ latest_release.json.tag_name }} and copy it to /usr/local/bin/"
+  become: true
+  get_url:
+    url: "https://github.com/rancher/k3d/releases/download/{{ latest_release.json.tag_name }}/k3d-linux-{{ system.arch }}"
+    dest: /usr/local/bin/k3d
+    mode: u+rwx,g+rx,o+rx
+
+
+#------------------------------------------------------------------------------
+# Terraform
+#------------------------------------------------------------------------------
+
+- name: add hashicorp repository
+  become: yes
+  yum_repository:
+    name: hashicorp
+    description: Hashicorp Stable
+    baseurl: https://rpm.releases.hashicorp.com/fedora/$releasever/$basearch/stable
+    gpgkey: https://rpm.releases.hashicorp.com/gpg
+
+- name: Install additional packages
+  become: true
+  dnf:
+    name: terraform
+    state: present
