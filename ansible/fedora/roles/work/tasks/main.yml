@@ -3,17 +3,8 @@
 # install work related tools
 #------------------------------------------------------------------------------
 
-- name: initialize package list
-  set_fact:
-    work_package_list: "{{ [] }}"
-
-- import_tasks: flathub.yml
-
 - import_tasks: google-chrome.yml
 
-- name: ensure packages are installed
-  become: yes
-  dnf:
-    name: "{{ work_package_list }}"
-    state: "present"
-    update_cache: yes
+- import_tasks: microsoft.yml
+
+#- import_tasks: flathub.yml

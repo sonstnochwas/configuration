@@ -6,8 +6,8 @@
 - name: ensure package is installed
   become: yes
   dnf:
-    name: "fedora-workstation-repositories"
-    state: "present"
+    name: fedora-workstation-repositories
+    state: present
     update_cache: yes
 
 - name: enable google chrome
@@ -16,6 +16,8 @@
     cmd: dnf config-manager --set-enabled google-chrome
     warn: false
 
-- name: add to package list
-  set_fact:
-    work_package_list: "{{ work_package_list + ['google-chrome-stable'] }}"
+- name: initialize package list
+  become: yes
+  dnf:
+    name: google-chrome-stable
+    state: present
