@@ -61,9 +61,11 @@
     - { name: 'init.vim', mode: 'u+rw' }
     - { name: 'colors/nord.vim', mode: 'u+rw' }
 
-- name: add to package list
-  set_fact:
-    base_package_list: "{{ base_package_list + ['neovim'] }}"
+- name: Install additional packages
+  become: true
+  dnf:
+    name: neovim
+    state: present
 
 
 #------------------------------------------------------------------------------
@@ -100,20 +102,16 @@
   with_items:
     - { src: 'tmux.conf.j2', dest: '.tmux.conf', mode: 'u+rw' }
 
-- name: add to package list
-  set_fact:
-    base_package_list: "{{ base_package_list + ['tmux'] }}"
+- name: Install additional packages
+  become: true
+  dnf:
+    name: tmux
+    state: present
 
 
 #------------------------------------------------------------------------------
 # bat config/theme
 #------------------------------------------------------------------------------
-
-- name: Install additional packages
-  become: true
-  apt:
-    name: bat
-    state: present
 
 - name: Ensure directory exists
   become: true
@@ -135,3 +133,10 @@
     group: "{{ user.group.name }}"
   with_items:
     - { name: 'config', mode: 'u+rw' }
+
+- name: Install additional packages
+  become: true
+  dnf:
+    name: bat
+    state: present
+

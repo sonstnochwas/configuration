@@ -1,4 +1,13 @@
 ---
+system:
+  arch: "amd64"
+  ubuntu_release: "focal"
+  slack_version: "4.20.0"
+  timezone: "Europe/Berlin"
+  locale: "en_US.UTF-8"
+  keyboard:
+    layout: "us"
+    variant: "altgr-intl"
 user:
   name: "earthling"
   home: "/home/earthling"
@@ -12,3 +21,4 @@ user:
     comment: "generated for source control"
     bits: 4096
     type: "ed25519"
+

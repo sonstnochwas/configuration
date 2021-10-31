@@ -52,7 +52,7 @@
 - name: add Atom repository
   become: yes
   yum_repository:
-    name: Atom Editor
+    name: atom
     description: Atom Editor
     baseurl: https://packagecloud.io/AtomEditor/atom/el/7/$basearch
     gpgkey: https://packagecloud.io/AtomEditor/atom/gpgkey
@@ -115,3 +115,4 @@
     - "space.jpg"
     - "world.jpg"
     - "yourfather.jpg"
+
