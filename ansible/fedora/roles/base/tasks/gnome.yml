@@ -1,0 +1,15 @@
+---
+#------------------------------------------------------------------------------
+# Gnome additions
+#------------------------------------------------------------------------------
+
+- name: ensure package is installed
+  become: yes
+  dnf:
+    name:
+      - dconf-editor
+      - gnome-tweaks
+      - gnome-extensions-app
+      - gnome-shell-extension-user-theme
+      - gnome-shell-theme-flat-remix
+    state: present
