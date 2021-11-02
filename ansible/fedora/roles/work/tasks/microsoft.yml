@@ -1,0 +1,55 @@
+---
+#------------------------------------------------------------------------------
+# install teams, powershell and visual studio code
+#------------------------------------------------------------------------------
+
+- name: add azure-cli repository
+  become: yes
+  yum_repository:
+    name: azure-cli
+    description: Azure CLI
+    baseurl: https://packages.microsoft.com/yumrepos/azure-cli
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+
+- name: add teams repository
+  become: yes
+  yum_repository:
+    name: teams
+    description: Microsoft Teams repository
+    baseurl: https://packages.microsoft.com/yumrepos/ms-teams
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+
+- name: add powershell repository
+  become: yes
+  yum_repository:
+    name: microsoft
+    description: Microsoft repository
+    baseurl: https://packages.microsoft.com/rhel/7/prod/
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+
+- name: add visual studio code repository
+  become: yes
+  yum_repository:
+    name: vscode
+    description: Visual Studio Code repository
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+
+- name: initialize package list
+  become: yes
+  dnf:
+    name:
+      - azure-cli
+      - powershell
+      - code
+      - teams
+    state: present
+
+# ToDo:
+# - add installation of vscode extensions
+#   - ms-azuretools.vscode-docker
+#   - golang.go
+#   - oderwat.indent-rainbow
+#   - ms-kubernetes-tools.vscode-kubernetes-tools
+#   - redhat.vscode-yaml
+# - add Powershell Azure module

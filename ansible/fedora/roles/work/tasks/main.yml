@@ -1,0 +1,10 @@
+---
+#------------------------------------------------------------------------------
+# install work related tools
+#------------------------------------------------------------------------------
+
+- import_tasks: google-chrome.yml
+
+- import_tasks: microsoft.yml
+
+#- import_tasks: flathub.yml

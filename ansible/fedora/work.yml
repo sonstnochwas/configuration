@@ -1,0 +1,11 @@
+---
+#------------------------------------------------------------------------------
+# Install work related tools
+#------------------------------------------------------------------------------
+
+- hosts: all
+  tasks:
+    - name: "Set up base configuration"
+      import_role:
+        name: work
+      become_method: sudo

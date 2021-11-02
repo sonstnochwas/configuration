@@ -1,0 +1,118 @@
+---
+#------------------------------------------------------------------------------
+# Add h264 to firefox
+#------------------------------------------------------------------------------
+
+- name: ensure package is installed
+  become: yes
+  dnf:
+    name: "fedora-workstation-repositories"
+    state: "present"
+    update_cache: yes
+
+- name: enable h264
+  become: yes
+  command:
+    cmd: dnf config-manager --set-enabled fedora-cisco-openh264
+    warn: false
+
+- name: Install additional packages
+  become: true
+  dnf:
+    name:
+      - gstreamer1-plugin-openh264
+      - mozilla-openh264
+    state: present
+
+
+#------------------------------------------------------------------------------
+# Github CLI
+# https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+#------------------------------------------------------------------------------
+
+- name: add github-cli repository
+  become: yes
+  yum_repository:
+    name: gh-cli
+    description: GitHub CLI repository
+    baseurl: https://cli.github.com/packages/rpm
+    gpgkey: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xc99b11deb97541f0
+
+- name: Install additional packages
+  become: true
+  dnf:
+    name: gh
+    state: present
+
+
+#------------------------------------------------------------------------------
+# Atom
+#------------------------------------------------------------------------------
+
+- name: add Atom repository
+  become: yes
+  yum_repository:
+    name: atom
+    description: Atom Editor
+    baseurl: https://packagecloud.io/AtomEditor/atom/el/7/$basearch
+    gpgkey: https://packagecloud.io/AtomEditor/atom/gpgkey
+
+- name: Install additional packages
+  become: true
+  dnf:
+    name: atom
+    state: present
+
+- name: Ensure directory exists
+  become: true
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".config/Atom"
+
+- name: Copy configuration
+  become: true
+  copy:
+    src: "atom/{{ item.name }}"
+    dest: "{{ user.home }}/.config/Atom/{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  with_items:
+    - { name: 'Preferences', mode: 'u+rw' }
+
+
+#------------------------------------------------------------------------------
+# Wallpaper
+#------------------------------------------------------------------------------
+
+- name: create directories
+  become: yes
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".config/wallpaper"
+
+- name: copy configuration
+  become: yes
+  copy:
+    src: "wallpaper/{{ item }}"
+    dest: "{{ user.home }}/.config/wallpaper/{{ item }}"
+  loop:
+    - "city.jpg"
+    - "d-star.jpg"
+    - "dstar.png"
+    - "goldengatebridge.jpg"
+    - "neverforget.jpg"
+    - "openwiz.png"
+    - "simple.jpg"
+    - "space.jpg"
+    - "world.jpg"
+    - "yourfather.jpg"
+

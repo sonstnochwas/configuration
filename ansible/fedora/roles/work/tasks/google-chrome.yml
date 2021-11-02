@@ -1,0 +1,23 @@
+---
+#------------------------------------------------------------------------------
+# install google chrome
+#------------------------------------------------------------------------------
+
+- name: ensure package is installed
+  become: yes
+  dnf:
+    name: fedora-workstation-repositories
+    state: present
+    update_cache: yes
+
+- name: enable google chrome
+  become: yes
+  command:
+    cmd: dnf config-manager --set-enabled google-chrome
+    warn: false
+
+- name: initialize package list
+  become: yes
+  dnf:
+    name: google-chrome-stable
+    state: present

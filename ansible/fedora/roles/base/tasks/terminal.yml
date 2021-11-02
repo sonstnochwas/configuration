@@ -1,0 +1,142 @@
+---
+#------------------------------------------------------------------------------
+# Alacritty
+#------------------------------------------------------------------------------
+
+- name: "Create directories"
+  become: yes
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".config/alacritty"
+
+- name: "Copy configuration"
+  become: yes
+  copy:
+    src: "alacritty/{{ item.name }}"
+    dest: "{{ user.home }}/.config/alacritty/{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - { name: 'alacritty.yml', mode: 'u+rw' }
+
+- name: Install additional packages
+  become: true
+  dnf:
+    name:
+      - alacritty
+      - jq
+      - fira-code-fonts
+      - fontawesome-fonts
+    state: present
+
+
+#------------------------------------------------------------------------------
+# NeoVim
+#------------------------------------------------------------------------------
+
+- name: create directories
+  become: yes
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".config/nvim/colors"
+
+- name: copy configuration
+  become: yes
+  copy:
+    src: "neovim/{{ item.name }}"
+    dest: "{{ user.home }}/.config/nvim/{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  with_items:
+    - { name: 'init.vim', mode: 'u+rw' }
+    - { name: 'colors/nord.vim', mode: 'u+rw' }
+
+- name: Install additional packages
+  become: true
+  dnf:
+    name: neovim
+    state: present
+
+
+#------------------------------------------------------------------------------
+# tmux
+# https://github.com/arcticicestudio/nord-tmux/
+#------------------------------------------------------------------------------
+
+- name: create directories
+  become: yes
+  file:
+    path: "{{ user.home }}/.config/tmux"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+
+
+- name: download and unarchive tmux theme
+  become: yes
+  unarchive:
+    src: https://github.com/arcticicestudio/nord-tmux/archive/v0.3.0.tar.gz
+    dest: "{{ user.home }}/.config/tmux"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+    remote_src: yes
+
+- name: render configuration
+  become: yes
+  template:
+    src: "tmux/{{ item.src }}"
+    dest: "{{ user.home }}/{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  with_items:
+    - { src: 'tmux.conf.j2', dest: '.tmux.conf', mode: 'u+rw' }
+
+- name: Install additional packages
+  become: true
+  dnf:
+    name: tmux
+    state: present
+
+
+#------------------------------------------------------------------------------
+# bat config/theme
+#------------------------------------------------------------------------------
+
+- name: Ensure directory exists
+  become: true
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".config/bat"
+
+- name: Copy configuration
+  become: true
+  copy:
+    src: "bat/{{ item.name }}"
+    dest: "{{ user.home }}/.config/bat/{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  with_items:
+    - { name: 'config', mode: 'u+rw' }
+
+- name: Install additional packages
+  become: true
+  dnf:
+    name: bat
+    state: present
+
