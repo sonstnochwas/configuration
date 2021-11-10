@@ -56,6 +56,7 @@
     description: Atom Editor
     baseurl: https://packagecloud.io/AtomEditor/atom/el/7/$basearch
     gpgkey: https://packagecloud.io/AtomEditor/atom/gpgkey
+    gpgcheck: no
 
 - name: Install additional packages
   become: true
@@ -115,4 +116,3 @@
     - "space.jpg"
     - "world.jpg"
     - "yourfather.jpg"
-

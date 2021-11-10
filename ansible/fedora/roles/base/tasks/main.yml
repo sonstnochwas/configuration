@@ -17,7 +17,7 @@
     name: '*'
     state: latest
 
-- name: Install basic packages 
+- name: Install basic packages
   become: yes
   dnf:
     name:
@@ -42,4 +42,4 @@
 
 - import_tasks: cloud-dev.yml
 
-- import_task: gnome.yml
+- import_tasks: gnome.yml
