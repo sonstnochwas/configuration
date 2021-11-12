@@ -3,17 +3,6 @@
 # Docker CE
 #------------------------------------------------------------------------------
 
-#- name: Remove legacy Docker packages
-#  become: true
-#  dnf:
-#    name: "{{ package }}"
-#    autoremove: yes
-#    state: absent
-#  vars:
-#    package:
-#    - lxc-docker
-#    - docker
-#    - docker-engine
 
 - name: Remove legacy Docker packages
   become: true
@@ -136,7 +125,7 @@
 
 
 #------------------------------------------------------------------------------
-# Terraform
+# Hashicorp
 #------------------------------------------------------------------------------
 
 - name: add hashicorp repository
@@ -150,5 +139,9 @@
 - name: Install additional packages
   become: true
   dnf:
-    name: terraform
+    name:
+      - terraform
+      - vault
+      - nomad
+      - consul
     state: present

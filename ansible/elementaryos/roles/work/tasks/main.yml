@@ -16,8 +16,6 @@
 
 - import_tasks: google-chrome.yml
 
-- import_tasks: hashicorp.yml
-
 - import_tasks: keepassxc.yml
 
 - import_tasks: slack.yml
