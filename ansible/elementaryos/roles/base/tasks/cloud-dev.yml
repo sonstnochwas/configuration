@@ -127,15 +127,3 @@
     mode: u+rwx,g+rx,o+rx
 
 
-#------------------------------------------------------------------------------
-# k3x (https://github.com/inercia/k3x)
-#------------------------------------------------------------------------------
-#
-#- name: Install k3x from flathub
-#  become: true
-#  become_user: '{{ user.name }}'
-#  flatpak:
-#    name: com.github.inercia.k3x.flatpak
-#    state: present
-#    remote: flathub
-#    method: user

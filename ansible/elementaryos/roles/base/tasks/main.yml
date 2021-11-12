@@ -37,3 +37,5 @@
 - import_tasks: dconf.yml
 
 - import_tasks: cloud-dev.yml
+
+- import_tasks: hashicorp.yml

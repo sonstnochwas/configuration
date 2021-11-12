@@ -18,6 +18,10 @@
 - name: Install apt package
   become: true
   apt:
-    name: "terraform"
+    name:
+      - terraform
+      - consul
+      - vault
+      - nomad
     state: present
     update_cache: "yes"
