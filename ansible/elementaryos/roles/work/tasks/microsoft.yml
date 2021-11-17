@@ -8,7 +8,7 @@
   apt_key:
     url: https://packages.microsoft.com/keys/microsoft.asc
     keyring: /etc/apt/trusted.gpg.d/packages.microsoft.gpg
-        state: present
+    state: present
 
 - name: Add vscode repository
   become: true
@@ -21,6 +21,7 @@
   become: true
   apt_repository:
     repo: "deb [arch={{ system.arch }}] https://packages.microsoft.com/repos/ms-teams stable main"
+    name: msteams
     state: present
 
 - name: Add azure-cli repository
