@@ -13,13 +13,15 @@
 - name: Add vscode repository
   become: true
   apt_repository:
-    repo: "deb [arch={{ system.arch }}] https://packages.microsoft.com/repos/code stable main"
+    repo: "deb [arch=amd64,arm64,armhf] http://packages.microsoft.com/repos/code stable main"
+    name: vscode
     state: present
 
 - name: Add teams repository
   become: true
   apt_repository:
     repo: "deb [arch={{ system.arch }}] https://packages.microsoft.com/repos/ms-teams stable main"
+    name: msteams
     state: present
 
 - name: Add azure-cli repository
