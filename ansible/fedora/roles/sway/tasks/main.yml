@@ -1,0 +1,90 @@
+---
+#------------------------------------------------------------------------------
+# sway environment
+#------------------------------------------------------------------------------
+
+- name: Install packages
+  become: yes
+  dnf:
+    name:
+      - sway
+      - swayidle
+      - swaylock
+      - waybar
+      - rofi
+      - light
+      - wl-clipboard
+      - network-manager-applet
+      - nwg-launchers
+      - NetworkManager-tui
+    state: present
+
+
+#------------------------------------------------------------------------------
+# sway configuration
+#------------------------------------------------------------------------------
+
+- name: Create directories
+  become: yes
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".swaynag"
+    - ".swaylock"
+    - ".config/rofi"
+    - ".config/sway"
+    - ".config/waybar"
+
+
+- name: Copy configuration
+  become: yes
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ user.home }}/{{ item.dest }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - { src: 'sway/config', dest: '.config/sway/config' }
+    - { src: 'swaynag/config', dest: '.swaynag/config' }
+    - { src: 'swaylock/config', dest: '.swaylock/config' }
+    - { src: 'waybar/config', dest: '.config/waybar/config' }
+    - { src: 'waybar/style.css', dest: '.config/waybar/style.css' }
+    - { src: 'rofi/config.rasi', dest: '.config/rofi/config.rasi' }
+    - { src: 'rofi/nord.rasi', dest: '.config/rofi/nord.rasi' }
+
+
+#------------------------------------------------------------------------------
+# sway configuration
+#------------------------------------------------------------------------------
+
+- name: "Download and unarchive gtk theme from github"
+  become: yes
+  unarchive:
+    src: https://github.com/EliverLara/Nordic/releases/download/v1.9.0/Nordic-darker.tar.xz
+    dest: "/usr/share/themes/"
+    remote_src: yes
+
+- name: "Unarchive icons"
+  become: yes
+  unarchive:
+    src: "./icons/Simply-Gray-Circles.tar.gz"
+    dest: "/usr/share/icons/"
+
+#- name: "Configure gtk theme"
+#  become: yes
+#  become_user: "{{ user.name }}"
+#  dconf:
+#    key: "/org/gnome/desktop/interface/gtk-theme"
+#    value: "'Nordic-darker'"
+#    state: present
+
+#- name: "Configure icon theme"
+#  become: yes
+#  become_user: "{{ user.name }}"
+#  dconf:
+#    key: "/org/gnome/desktop/interface/icon-theme"
+#    value: "'Simply-Gray-Circles'"
+#    state: present

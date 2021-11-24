@@ -1,5 +1,0 @@
----
-sway_package_list:
-  - jq
-  - fira-code-fonts
-  - NetworkManager-tui
