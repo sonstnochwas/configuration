@@ -69,44 +69,36 @@
 
 
 #------------------------------------------------------------------------------
-# tmux
-# https://github.com/arcticicestudio/nord-tmux/
+# zellij config/theme
 #------------------------------------------------------------------------------
 
-- name: create directories
-  become: yes
+- name: Ensure directory exists
+  become: true
   file:
-    path: "{{ user.home }}/.config/tmux"
+    path: "{{ user.home }}/{{ item }}"
     state: directory
     owner: "{{ user.name }}"
     group: "{{ user.group.name }}"
+  loop:
+    - ".config/zellij"
 
-
-- name: download and unarchive tmux theme
-  become: yes
-  unarchive:
-    src: https://github.com/arcticicestudio/nord-tmux/archive/v0.3.0.tar.gz
-    dest: "{{ user.home }}/.config/tmux"
-    owner: "{{ user.name }}"
-    group: "{{ user.group.name }}"
-    remote_src: yes
-
-- name: render configuration
-  become: yes
-  template:
-    src: "tmux/{{ item.src }}"
-    dest: "{{ user.home }}/{{ item.dest }}"
+- name: Copy configuration
+  become: true
+  copy:
+    src: "zellij/{{ item.name }}"
+    dest: "{{ user.home }}/.config/zellij/{{ item.name }}"
     mode: "{{ item.mode }}"
     owner: "{{ user.name }}"
     group: "{{ user.group.name }}"
   with_items:
-    - { src: 'tmux.conf.j2', dest: '.tmux.conf', mode: 'u+rw' }
+    - { name: 'config', mode: 'u+rw' }
 
-- name: Install additional packages
-  become: true
-  dnf:
-    name: tmux
-    state: present
+# No fedora package, yet. Needs to be installed via "cargo install zellij"
+# - name: Install additional packages
+#   become: true
+#   dnf:
+#     name: bat
+#     state: present
 
 
 #------------------------------------------------------------------------------
@@ -140,3 +132,43 @@
     name: bat
     state: present
 
+
+#------------------------------------------------------------------------------
+# tmux
+# https://github.com/arcticicestudio/nord-tmux/
+#------------------------------------------------------------------------------
+#
+# - name: create directories
+#   become: yes
+#   file:
+#     path: "{{ user.home }}/.config/tmux"
+#     state: directory
+#     owner: "{{ user.name }}"
+#     group: "{{ user.group.name }}"
+#
+#
+# - name: download and unarchive tmux theme
+#   become: yes
+#   unarchive:
+#     src: https://github.com/arcticicestudio/nord-tmux/archive/v0.3.0.tar.gz
+#     dest: "{{ user.home }}/.config/tmux"
+#     owner: "{{ user.name }}"
+#     group: "{{ user.group.name }}"
+#     remote_src: yes
+#
+# - name: render configuration
+#   become: yes
+#   template:
+#     src: "tmux/{{ item.src }}"
+#     dest: "{{ user.home }}/{{ item.dest }}"
+#     mode: "{{ item.mode }}"
+#     owner: "{{ user.name }}"
+#     group: "{{ user.group.name }}"
+#   with_items:
+#     - { src: 'tmux.conf.j2', dest: '.tmux.conf', mode: 'u+rw' }
+#
+# - name: Install additional packages
+#   become: true
+#   dnf:
+#     name: tmux
+#     state: present
