@@ -91,7 +91,7 @@
     owner: "{{ user.name }}"
     group: "{{ user.group.name }}"
   with_items:
-    - { name: 'config', mode: 'u+rw' }
+    - { name: 'config.yaml', mode: 'u+rw' }
 
 # No fedora package, yet. Needs to be installed via "cargo install zellij"
 # - name: Install additional packages
@@ -130,6 +130,39 @@
   become: true
   dnf:
     name: bat
+    state: present
+
+
+#------------------------------------------------------------------------------
+# starship
+# https://starship.rs/config/
+#------------------------------------------------------------------------------
+
+- name: Ensure directory exists
+  become: true
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".config/starship"
+
+- name: Copy configuration
+  become: true
+  copy:
+    src: "starship/{{ item.name }}"
+    dest: "{{ user.home }}/.config/starship/{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  with_items:
+    - { name: 'starship.toml', mode: 'u+rw' }
+
+- name: Install additional packages
+  become: true
+  dnf:
+    name: starship
     state: present
 
 
