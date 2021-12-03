@@ -69,39 +69,6 @@
 
 
 #------------------------------------------------------------------------------
-# zellij config/theme
-#------------------------------------------------------------------------------
-
-- name: Ensure directory exists
-  become: true
-  file:
-    path: "{{ user.home }}/{{ item }}"
-    state: directory
-    owner: "{{ user.name }}"
-    group: "{{ user.group.name }}"
-  loop:
-    - ".config/zellij"
-
-- name: Copy configuration
-  become: true
-  copy:
-    src: "zellij/{{ item.name }}"
-    dest: "{{ user.home }}/.config/zellij/{{ item.name }}"
-    mode: "{{ item.mode }}"
-    owner: "{{ user.name }}"
-    group: "{{ user.group.name }}"
-  with_items:
-    - { name: 'config.yaml', mode: 'u+rw' }
-
-# No fedora package, yet. Needs to be installed via "cargo install zellij"
-# - name: Install additional packages
-#   become: true
-#   dnf:
-#     name: bat
-#     state: present
-
-
-#------------------------------------------------------------------------------
 # bat config/theme
 #------------------------------------------------------------------------------
 
@@ -134,74 +101,40 @@
 
 
 #------------------------------------------------------------------------------
-# starship
-# https://starship.rs/config/
+# tmux
+# https://github.com/arcticicestudio/nord-tmux/
 #------------------------------------------------------------------------------
 
-- name: Ensure directory exists
-  become: true
+- name: create directories
+  become: yes
   file:
-    path: "{{ user.home }}/{{ item }}"
+    path: "{{ user.home }}/.config/tmux"
     state: directory
     owner: "{{ user.name }}"
     group: "{{ user.group.name }}"
-  loop:
-    - ".config/starship"
 
-- name: Copy configuration
-  become: true
-  copy:
-    src: "starship/{{ item.name }}"
-    dest: "{{ user.home }}/.config/starship/{{ item.name }}"
+- name: download and unarchive tmux theme
+  become: yes
+  unarchive:
+    src: https://github.com/arcticicestudio/nord-tmux/archive/v0.3.0.tar.gz
+    dest: "{{ user.home }}/.config/tmux"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+    remote_src: yes
+
+- name: render configuration
+  become: yes
+  template:
+    src: "tmux/{{ item.src }}"
+    dest: "{{ user.home }}/{{ item.dest }}"
     mode: "{{ item.mode }}"
     owner: "{{ user.name }}"
     group: "{{ user.group.name }}"
   with_items:
-    - { name: 'starship.toml', mode: 'u+rw' }
+    - { src: 'tmux.conf.j2', dest: '.tmux.conf', mode: 'u+rw' }
 
 - name: Install additional packages
   become: true
   dnf:
-    name: starship
+    name: tmux
     state: present
-
-
-#------------------------------------------------------------------------------
-# tmux
-# https://github.com/arcticicestudio/nord-tmux/
-#------------------------------------------------------------------------------
-#
-# - name: create directories
-#   become: yes
-#   file:
-#     path: "{{ user.home }}/.config/tmux"
-#     state: directory
-#     owner: "{{ user.name }}"
-#     group: "{{ user.group.name }}"
-#
-#
-# - name: download and unarchive tmux theme
-#   become: yes
-#   unarchive:
-#     src: https://github.com/arcticicestudio/nord-tmux/archive/v0.3.0.tar.gz
-#     dest: "{{ user.home }}/.config/tmux"
-#     owner: "{{ user.name }}"
-#     group: "{{ user.group.name }}"
-#     remote_src: yes
-#
-# - name: render configuration
-#   become: yes
-#   template:
-#     src: "tmux/{{ item.src }}"
-#     dest: "{{ user.home }}/{{ item.dest }}"
-#     mode: "{{ item.mode }}"
-#     owner: "{{ user.name }}"
-#     group: "{{ user.group.name }}"
-#   with_items:
-#     - { src: 'tmux.conf.j2', dest: '.tmux.conf', mode: 'u+rw' }
-#
-# - name: Install additional packages
-#   become: true
-#   dnf:
-#     name: tmux
-#     state: present
