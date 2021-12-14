@@ -20,7 +20,6 @@
       enp2s0.useDHCP = true;
       wlp3s0.useDHCP = true;
     };
-    wireless.enable = true;
     firewall = {
       enable = false;
       # allowedTCPPorts = [ ... ];
@@ -92,7 +91,7 @@
     withPython3 = true;
   };
 
-  programs.pantheon-tweaks.enabe = true;
+  programs.pantheon-tweaks.enable = true;
 
   programs.tmux = {
     enable = true;
@@ -135,7 +134,6 @@
     buildah
     alacritty
   ];
-};
 
   #############################################################################
   # Services
@@ -233,7 +231,7 @@
 
   sound.enable = true;
 
-  hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.enable = false;
 
   system.stateVersion = "21.11"; # Did you read the comment?
 }
