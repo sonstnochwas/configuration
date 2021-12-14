@@ -1,6 +1,4 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+# NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
 
@@ -10,57 +8,37 @@
       ./hardware-configuration.nix
     ];
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+  };
 
-  # networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking = {
+    hostName = "milesobrian";
+    useDHCP = false;
+    interfaces = {
+      enp2s0.useDHCP = true;
+      wlp3s0.useDHCP = true;
+    };
+    wireless.enable = true;
+    firewall = {
+      enable = false;
+      # allowedTCPPorts = [ ... ];
+      # allowedUDPPorts = [ ... ];
+    };
+  };
 
-  # Set your time zone.
+  #############################################################################
+  # Internationalisation
+  #############################################################################
+
   time.timeZone = "Europe/Berlin";
 
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  networking.hostName = "milesobrian";
-  networking.useDHCP = false;
-  networking.interfaces.enp2s0.useDHCP = true;
-  networking.interfaces.wlp3s0.useDHCP = true;
-
-
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
-
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable pantheon desktop
-  services.xserver.desktopManager.pantheon.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  # services.xserver.displayManager.gdm.enable = true;
-  # services.xserver.desktopManager.gnome.enable = true;
-
-
-  # Configure keymap in X11
-  services.xserver.layout = "us";
-  services.xserver.xkbVariant = "intl";
-  # services.xserver.xkbOptions = "eurosign:e";
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound.
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  i18n.defaultLocale = "en_US.UTF-8";
+  console = {
+    font = "Lat2-Terminus16";
+    keyMap = "us";
+  };
 
 
   fonts.fonts = with pkgs; [
@@ -69,86 +47,193 @@
     powerline-fonts
   ];
 
+  powerManagement.powertop.enable = true;
+
+  #############################################################################
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  #############################################################################
+
   users.users.earthling = {
      isNormalUser = true;
      shell = pkgs.zsh;
      extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   };
 
-  programs = {
-    zsh = {
-      enable = true;
-      ohMyZsh = {
-        enable = true;
-        plugins = [ "git" "python" "helm" "kubectl"];
-        theme = "agnoster";
-      };
-    };
-    tmux = {
-      enable = true;
-      clock24 = true;
+  #############################################################################
+  # Program configuration
+  #############################################################################
+
+  programs.git = {
+    enable = true;
+    lfs.enable = true;
+    config = {
+      fetch = { prune = true; };
     };
   };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  nixpkgs.config.allowUnfree = true;
-  environment = {
-    variables = {
-      DEFAULT_USER = "earthling";
+  programs.htop.enable = true;
+
+  programs.light.enable = true;
+
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+    configure = {
+      customRC = ''
+        set nocompatible
+        syntax on
+        set foldmethod=syntax
+        set nu
+        filetype indent plugin on
+      '';
     };
-    systemPackages = with pkgs; [
-      zsh
-      vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-      tmux
-      zellij
-      curl
-      gh
-      git
-      tig
-      atom
-      home-manager
-      firefox
-      stack
-      cue
-      kubectl
-      kubernetes-helm
-      buildah
-      alacritty
-    ];
+    withPython3 = true;
   };
+
+  programs.pantheon-tweaks.enabe = true;
+
+  programs.tmux = {
+    enable = true;
+    clock24 = true;
+    newSession = true;
+  };
+
+  programs.wireshark.enable = true;
+
+  programs.zsh = {
+    enable = true;
+    ohMyZsh = {
+      enable = true;
+      plugins = [ "git" "python" "helm" "kubectl"];
+      theme = "agnoster";
+    };
+  };
+
+  #############################################################################
+  # Packages and environment
+  #############################################################################
+
+  nixpkgs.config.allowUnfree = true;
+
+  environment.variables = {
+    DEFAULT_USER = "earthling";
+    KUBECONFIG = "/etc/rancher/k3s/k3s.yaml";
+  };
+
+  environment.systemPackages = with pkgs; [
+    curl
+    gh
+    tig
+    atom
+    firefox
+    stack
+    cue
+    kubectl
+    kubernetes-helm
+    buildah
+    alacritty
+  ];
+};
+
+  #############################################################################
+  # Services
+  #############################################################################
+
+  services.clamav = {
+    daemon.enable = true;
+    updater = {
+      enable = true;
+      frequency = 1;
+      interval = "hourly";
+    };
+  };
+
+  services.earlyoom = {
+    enable = true;
+    enableNotifications = true;
+  };
+
+  services.fwupd.enable = true;
+
+  services.k3s = {
+    enable = true;
+    extraFlags = "--write-kubeconfig-mode 644";
+  };
+
+  services.openssh.enable = true;
+
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    jack.enable = true;
+    media-session.enable = true;
+    pulse.enable = true;
+
+  };
+
+  services.printing.enable = true;
+
+  services.xserver = {
+    enable = true;
+    desktopManager.pantheon.enable = true;
+    layout = "us";
+    xkbVariant = "intl";
+    libinput.enable = true;
+  };
+
+  #############################################################################
+  # Testing
+  #############################################################################
+  # service.confluence
+  # services.dockerRegistry
+  # services.elasticsearch
+  # services.github-runner
+  # services.gitlab
+  # services.gocd-agent
+  # services.grafana
+  # services.haproxy
+  # services.jenkins
+  # services.jira
+  # services.journalbeat
+  # services.kibana
+  # services.kubernetes
+  # services.logstash
+  # services.loki
+  # services.minecraft-server
+  # services.nextcloud
+  # services.nginx
+  # services.nomad
+  # services.openldap
+  # services.postgresql
+  # services.prometheus
+  # services.rabbitmq
+  # services.redis
+  # services.redshift
+  # services.thermald
+  # services.thinkfan
+  # services.tlp
+  # services.vault
+  # services.vaultwarden
+  # services.xserver.desktopManager.wallpaper.mode
+
+  #############################################################################
+  # Virtualisation
+  #############################################################################
 
   virtualisation.podman = {
     enable = true;
     dockerCompat = true;
   };
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+  #############################################################################
+  # Misc
+  #############################################################################
 
-  # List services that you want to enable:
+  sound.enable = true;
 
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  hardware.pulseaudio.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "21.11"; # Did you read the comment?
-
 }
