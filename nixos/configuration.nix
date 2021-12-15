@@ -14,7 +14,7 @@
   };
 
   networking = {
-    hostName = "milesobrian";
+    hostName = "taucetif";
     useDHCP = false;
     interfaces = {
       enp2s0.useDHCP = true;
@@ -39,10 +39,7 @@
     keyMap = "us";
   };
 
-
   fonts.fonts = with pkgs; [
-    fira-code
-    fira-code-symbols
     powerline-fonts
   ];
 
@@ -133,6 +130,7 @@
     kubernetes-helm
     buildah
     alacritty
+    nixops
   ];
 
   #############################################################################
@@ -176,45 +174,10 @@
   services.xserver = {
     enable = true;
     desktopManager.pantheon.enable = true;
-    layout = "us";
-    xkbVariant = "intl";
+    layout = "us,us";
+    xkbVariant = "altgr-intl,";
     libinput.enable = true;
   };
-
-  #############################################################################
-  # Testing
-  #############################################################################
-  # service.confluence
-  # services.dockerRegistry
-  # services.elasticsearch
-  # services.github-runner
-  # services.gitlab
-  # services.gocd-agent
-  # services.grafana
-  # services.haproxy
-  # services.jenkins
-  # services.jira
-  # services.journalbeat
-  # services.kibana
-  # services.kubernetes
-  # services.logstash
-  # services.loki
-  # services.minecraft-server
-  # services.nextcloud
-  # services.nginx
-  # services.nomad
-  # services.openldap
-  # services.postgresql
-  # services.prometheus
-  # services.rabbitmq
-  # services.redis
-  # services.redshift
-  # services.thermald
-  # services.thinkfan
-  # services.tlp
-  # services.vault
-  # services.vaultwarden
-  # services.xserver.desktopManager.wallpaper.mode
 
   #############################################################################
   # Virtualisation
@@ -225,13 +188,16 @@
     dockerCompat = true;
   };
 
+  virtualisation.libvirtd.enable = true;
+
   #############################################################################
   # Misc
   #############################################################################
 
+  hardware.pulseaudio.enable = false;
   sound.enable = true;
 
-  hardware.pulseaudio.enable = false;
+  systemd.services.k3s.enable = false;
 
   system.stateVersion = "21.11"; # Did you read the comment?
 }
