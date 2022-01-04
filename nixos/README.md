@@ -37,6 +37,21 @@ OK
 OK
 > enable_network 0
 OK
+... some more output ...
+> quit
+```
+
+### Installation
+
+[reference](https://gnulinux.ch/wie-installiert-man-nixos)
+
+Notes:
+```bash
+pvcreate /dev/mapper/lvm
+vgcreate main /dev/mapper/lvm
+lvcreate -L 2G -n swap main
+lvcreate -L 40G -n root main
+lvcreate -l 100%FREE -n home main
 ```
 
 ## Try these services another time
