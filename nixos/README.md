@@ -2,14 +2,42 @@
 
 ## Documentation
 
-tba
+Detailed instructions: [official NixOS documentation](https://nixos.org/manual/nixos/stable/index.html)
 
 ## Pre-install
 
-1. Download minimal image
+### Installation media
 
-2. Set up wifi
+Download minimal ISO [here](https://channels.nixos.org/nixos-21.11/latest-nixos-minimal-x86_64-linux.iso) and write to thumb drive (recommendation: [Ventoy]{https://github.com/ventoy/Ventoy}).
 
+### Set up wifi (w/o Network Manager)
+
+Wifi interface name:
+```bash
+$ ip -br add
+# or beautiful:
+$ ip -brief -color address 
+```
+
+Start `wpa_supplicant`:
+```bash
+$ sudo systemctl start wpa_supplicant
+```
+
+Run `wpa_cli` to configure the wifi:
+```bash
+$ wpa_cli -i YourWifiInterfaceName
+> add_network
+0
+> set_network 0 ssid "YourHomeNetwork"
+OK
+> set_network 0 psk "YourPassword"
+OK
+> set_network 0 key_mgmt WPA-PSK
+OK
+> enable_network 0
+OK
+```
 
 ## Try these services another time
 
