@@ -14,7 +14,7 @@
   };
 
   networking = {
-    hostName = "taucetif";
+    hostName = "kapteynb";
     useDHCP = false;
     interfaces = {
       enp2s0.useDHCP = true;
@@ -115,13 +115,14 @@
 
   environment.variables = {
     DEFAULT_USER = "earthling";
-    KUBECONFIG = "/etc/rancher/k3s/k3s.yaml";
+    #KUBECONFIG = "/etc/rancher/k3s/k3s.yaml";
   };
 
   environment.systemPackages = with pkgs; [
     curl
     gh
     tig
+    gitui
     atom
     firefox
     stack
@@ -130,6 +131,14 @@
     kubernetes-helm
     buildah
     alacritty
+    teams
+    google-chrome
+    bitwarden
+    bitwarden-cli
+    pcloud
+    vault
+    terraform
+    teleport
   ];
 
   #############################################################################
@@ -152,10 +161,7 @@
 
   services.fwupd.enable = true;
 
-  services.k3s = {
-    enable = true;
-    extraFlags = "--write-kubeconfig-mode 644";
-  };
+  services.k3s.enable = true;
 
   services.openssh.enable = true;
 
@@ -165,7 +171,6 @@
     jack.enable = true;
     media-session.enable = true;
     pulse.enable = true;
-
   };
 
   services.printing.enable = true;
