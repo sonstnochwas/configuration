@@ -2,7 +2,7 @@
 
 set -e
 
-function shure {
+function confirm2continue {
     echo -e "\nAre you sure you wish to continue?"
     read -p "Please type \"YES\": "
     if [ "$REPLY" != "YES" ]; then
@@ -11,7 +11,7 @@ function shure {
 }
 
 echo -e "NOTE:\nThis script will delete EVERYTHING and re-partition your hard drive!!"
-shure
+confirm2continue
 
 echo -e "\nINSTALLATION TARGET"
 
