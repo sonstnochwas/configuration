@@ -133,9 +133,8 @@
     bitwarden
     bitwarden-cli
     pcloud
-    vault
-    terraform
-    teleport
+    ecryptfs
+    ecryptfs-helper
   ];
 
   #############################################################################
@@ -199,6 +198,8 @@
   sound.enable = true;
 
   systemd.services.k3s.enable = false;
+
+  security.pam.enableEcryptfs = true;
 
   system.stateVersion = "21.11"; # Did you read the comment?
 }
