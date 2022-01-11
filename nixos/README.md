@@ -8,7 +8,7 @@ Detailed instructions: [official NixOS documentation](https://nixos.org/manual/n
 
 ### Installation media
 
-Download minimal ISO [here](https://channels.nixos.org/nixos-21.11/latest-nixos-minimal-x86_64-linux.iso) and write to thumb drive (recommendation: [Ventoy]{https://github.com/ventoy/Ventoy}).
+Download minimal ISO [here](https://channels.nixos.org/nixos-21.11/latest-nixos-minimal-x86_64-linux.iso) and write to thumb drive (recommendation: [Ventoy](https://github.com/ventoy/Ventoy)).
 
 ### Set up wifi (w/o Network Manager)
 
@@ -16,7 +16,7 @@ Wifi interface name:
 ```bash
 $ ip -br add
 # or beautiful:
-$ ip -brief -color address 
+$ ip -brief -color address
 ```
 
 Start `wpa_supplicant`:
@@ -41,17 +41,18 @@ OK
 > quit
 ```
 
-### Installation
+## Installation
 
-[reference](https://gnulinux.ch/wie-installiert-man-nixos)
+... t.b.a. script ...
 
-Notes:
+## Post-install
+
+### eCryptfs
+
+see [documentation](https://www.ecryptfs.org/)
+
 ```bash
-pvcreate /dev/mapper/lvm
-vgcreate main /dev/mapper/lvm
-lvcreate -L 2G -n swap main
-lvcreate -L 40G -n root main
-lvcreate -l 100%FREE -n home main
+ecryptfs-setup-private
 ```
 
 ## Try these services another time
