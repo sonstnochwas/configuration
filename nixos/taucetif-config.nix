@@ -8,9 +8,6 @@
       ./hardware-configuration.nix
     ];
 
-    boot.
-
-
   boot = {
     kernelModules = [ "ecryptfs" ];
     loader = {
