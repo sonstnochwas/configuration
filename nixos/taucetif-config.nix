@@ -121,37 +121,35 @@
   };
 
   environment.systemPackages = with pkgs; [
-    curl
-    gh
-    tig
-    gitui
-    atom
     firefox
-    stack
-    cue
-    kubectl
-    kubernetes-helm
-    buildah
     alacritty
+    curl
     bitwarden
     bitwarden-cli
     pcloud
     ecryptfs
     ecryptfs-helper
+    gh
+    tig
+    stack
+    buildah
+    bat   # possible replacement fot cat
+    xh    # potential replacement for curl
+    gitui # potential replacement for tig
   ];
 
   #############################################################################
   # Services
   #############################################################################
 
-  services.clamav = {
-    daemon.enable = true;
-    updater = {
-      enable = true;
-      frequency = 1;
-      interval = "hourly";
-    };
-  };
+  #services.clamav = {
+  #  daemon.enable = true;
+  #  updater = {
+  #    enable = true;
+  #    frequency = 1;
+  #    interval = "hourly";
+  #  };
+  #};
 
   services.earlyoom = {
     enable = true;
@@ -160,7 +158,7 @@
 
   services.fwupd.enable = true;
 
-  services.k3s.enable = true;
+  #services.k3s.enable = true;
 
   services.openssh.enable = true;
 
@@ -191,7 +189,7 @@
     dockerCompat = true;
   };
 
-  virtualisation.libvirtd.enable = true;
+  #virtualisation.libvirtd.enable = true;
 
   #############################################################################
   # Misc
@@ -200,7 +198,7 @@
   hardware.pulseaudio.enable = false;
   sound.enable = true;
 
-  systemd.services.k3s.enable = false;
+  # systemd.services.k3s.enable = false;
 
   security.pam.enableEcryptfs = true;
 

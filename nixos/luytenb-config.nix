@@ -8,9 +8,12 @@
       ./hardware-configuration.nix
     ];
 
-  boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
+  boot = {
+    kernelModules = [ "ecryptfs" ];
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
   };
 
   networking = {
@@ -96,8 +99,6 @@
     newSession = true;
   };
 
-  programs.wireshark.enable = true;
-
   programs.zsh = {
     enable = true;
     ohMyZsh = {
@@ -118,38 +119,37 @@
   };
 
   environment.systemPackages = with pkgs; [
-    curl
-    gh
-    tig
-    gitui
-    atom
     firefox
-    stack
-    cue
-    kubectl
-    kubernetes-helm
-    buildah
     alacritty
+    curl
     bitwarden
     bitwarden-cli
     pcloud
-    vault
-    terraform
-    teleport
+    ecryptfs
+    ecryptfs-helper
+    gh
+    tig
+    stack
+    buildah
+    kubectl
+    kubernetes-helm
+    bat   # possible replacement fot cat
+    xh    # potential replacement for curl
+    gitui # potential replacement for tig
   ];
 
   #############################################################################
   # Services
   #############################################################################
 
-  services.clamav = {
-    daemon.enable = true;
-    updater = {
-      enable = true;
-      frequency = 1;
-      interval = "hourly";
-    };
-  };
+  #services.clamav = {
+  #  daemon.enable = true;
+  #  updater = {
+  #    enable = true;
+  #    frequency = 1;
+  #    interval = "hourly";
+  #  };
+  #};
 
   services.earlyoom = {
     enable = true;
@@ -199,6 +199,8 @@
   sound.enable = true;
 
   systemd.services.k3s.enable = false;
+
+  security.pam.enableEcryptfs = true;
 
   system.stateVersion = "21.11"; # Did you read the comment?
 }
