@@ -134,9 +134,10 @@
     stack
     dhall
     buildah
-    bat   # possible replacement fot cat
-    xh    # potential replacement for curl
-    gitui # potential replacement for tig
+    bat     # possible replacement fot cat
+    xh      # potential replacement for curl
+    gitui   # potential replacement for tig
+    chezmoi # dotfile mgmt https://www.chezmoi.io/user-guide/
   ];
 
   #############################################################################
