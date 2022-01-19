@@ -132,6 +132,7 @@
     gh
     tig
     stack
+    dhall
     buildah
     bat   # possible replacement fot cat
     xh    # potential replacement for curl
