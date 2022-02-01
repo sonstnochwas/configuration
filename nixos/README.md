@@ -55,6 +55,15 @@ see [documentation](https://www.ecryptfs.org/)
 ecryptfs-setup-private
 ```
 
+## Ressources
+
+- [Awesomwe Nix](https://nix-community.github.io/awesome-nix/)
+- [Nix Pills](https://nixos.org/guides/nix-pills/)
+- [nixos-generators - one config, multiple formats](https://github.com/nix-community/nixos-generators)
+- [nix.dev](https://nix.dev)
+
+- [nixos-up](https://github.com/samuela/nixos-up)
+
 ## Try these services another time
 
 - service.confluence

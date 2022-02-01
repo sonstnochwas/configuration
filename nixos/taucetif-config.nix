@@ -134,6 +134,7 @@
     stack
     dhall
     buildah
+    glow    # read markdown files in terminal
     bat     # possible replacement fot cat
     xh      # potential replacement for curl
     gitui   # potential replacement for tig
