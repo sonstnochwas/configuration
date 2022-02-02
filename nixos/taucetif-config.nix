@@ -134,6 +134,7 @@
     stack
     dhall
     buildah
+    foliate # ebook reader
     glow    # read markdown files in terminal
     bat     # possible replacement fot cat
     xh      # potential replacement for curl
