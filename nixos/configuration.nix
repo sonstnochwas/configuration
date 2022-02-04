@@ -108,25 +108,40 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  environment.variables = {
-    DEFAULT_USER = "earthling";
-  };
-
   environment.systemPackages = with pkgs; [
-    # development
-    git stack dhall
+    # development #############################################################
+    git   # distributed vcs
+    stack # the haskel tool stack
+    dhall # a configuration language
+    cue   # data constraint language
 
-    # console tools
-    gh tig bat glow curl xh bitwarden-cli
+    # console tools ##########################################################
+    gh            # GitHub CLI
+    tig           # text-mode interface for git
+    bat           # cat clone with syntax highlighting and Git integration
+    glow          # render markdown on the CLI
+    curl          # you shouldknow
+    xh            # friendly and fast tool for sending HTTP requests
+    bitwarden-cli # secure and free password manager
 
-    # gui
-    alacritty bitwarden firefox foliate pcloud
+    # gui ####################################################################
+    alacritty 
+    bitwarden # secure and free password manager
+    firefox
+    foliate
+    pcloud
+    foliate   # eBook viewer
+    helvum    # GTK patchbay for pipewire
     
-    # system
-    ecryptfs ecryptfs-helper
+    # system #################################################################
+    ecryptfs
+    ecryptfs-helper
 
-    # cloud
-    azure-cli buildah helm kubectl
+    # cloud ##################################################################
+    azure-cli
+    buildah
+    helm
+    kubectl
   ];
 
   #############################################################################
