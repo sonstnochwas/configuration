@@ -57,11 +57,17 @@ ecryptfs-setup-private
 
 ## Ressources
 
+> Ressources I use frequently ...
+
+- [NixOS Package Search](https://search.nixos.org/packages)
+- [NixOS Options Search](https://search.nixos.org/options)
+- [NixOS Handbook](https://nixos.org/manual/nixos/stable)
+- [NixOS Wiki](https://nixos.wiki/)
 - [Awesomwe Nix](https://nix-community.github.io/awesome-nix/)
 - [Nix Pills](https://nixos.org/guides/nix-pills/)
 - [nixos-generators - one config, multiple formats](https://github.com/nix-community/nixos-generators)
 - [nix.dev](https://nix.dev)
-
+- [NixOS Configuration Collection](https://nixos.wiki/wiki/Configuration_Collection)
 - [nixos-up](https://github.com/samuela/nixos-up)
 
 ## Try these services another time

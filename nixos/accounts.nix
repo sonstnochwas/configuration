@@ -6,6 +6,10 @@
   # Don't forget to set a password with 'passwd'
   #############################################################################
 
+  environment.variables = {
+    DEFAULT_USER = "earthling";
+  };
+
   users.users.earthling = {
     isNormalUser = true;
     shell = pkgs.zsh;
@@ -16,7 +20,7 @@
     extraGroups = [ "wheel" ];
   };
 
-  users.users.good4nothing = {
+  users.users.powerless = {
     isNormalUser = true;
     shell = pkgs.zsh;
     description = "User with limited abilities";
