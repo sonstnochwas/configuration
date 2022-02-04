@@ -57,6 +57,9 @@ ecryptfs-setup-private
 
 ## Ressources
 
+> NixOS & LUKS [guide](https://gist.github.com/martijnvermaat/76f2e24d0239470dd71050358b4d5134#file-nixos-md)
+
+
 > Ressources I use frequently ...
 
 - [NixOS Package Search](https://search.nixos.org/packages)

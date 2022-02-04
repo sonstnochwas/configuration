@@ -4,7 +4,7 @@ set -e
 
 function confirm2continue {
     echo -e "Are you sure you wish to continue?"
-    read -p "Please type \"YES\": "
+    read -p "Please type \"YES\" -> "
     if [ "$REPLY" != "YES" ]; then
         exit
     fi
@@ -19,7 +19,7 @@ confirm2continue
 
 echo -e "\nINSTALLATION TARGET\n-------------------"
 options=($(lsblk --paths --nodeps --output NAME --noheading))
-PS3="Please select: "
+PS3="Please select -> "
 select target in "${options[@]}"; do
     if [[ " ${options[*]} " =~ " ${target} " ]]; then
         echo "Usinig $target for installation"
@@ -28,6 +28,17 @@ select target in "${options[@]}"; do
 done
 
 memory=$(($(getconf _PHYS_PAGES) * $(getconf PAGE_SIZE) / (1024 * 1024 * 1024 ) + 1 ))
+
+# read password for disk encryption
+echo -e "\nDISK ENCRYPTION PASSWORD\n-------------------"
+while true; do
+  read -s -p "Password         -> " password
+  echo
+  read -s -p "Password (again) -> " password2
+  echo
+  [ "$password" = "$password2" ] && break
+  echo "Passwords don't match! Please try again."
+done
 
 # What will be done?
 echo -e "\nCONFIGURATION SUMMARY\n---------------------"
