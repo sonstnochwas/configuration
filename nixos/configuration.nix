@@ -123,6 +123,7 @@
     curl          # you shouldknow
     xh            # friendly and fast tool for sending HTTP requests
     bitwarden-cli # secure and free password manager
+    tree
 
     # gui ####################################################################
     alacritty 
