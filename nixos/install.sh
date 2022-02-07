@@ -10,6 +10,12 @@ function confirm2continue {
     fi
 }
 
+function getSwapSize {
+    # based on https://itsfoss.com/swap-size
+    local memory=$(($(getconf _PHYS_PAGES) * $(getconf PAGE_SIZE) / (1024 * 1024 * 1024 ) + 1 ))
+    echo $(echo "scale=0;$memory + sqrt($memory)" | bc)
+}
+
 # Some warnings!
 
 echo -e "\nWARNING\n-------\nThis script will delete EVERYTHING and re-partition your hard drive!!"
@@ -27,7 +33,6 @@ select target in "${options[@]}"; do
     fi
 done
 
-memory=$(($(getconf _PHYS_PAGES) * $(getconf PAGE_SIZE) / (1024 * 1024 * 1024 ) + 1 ))
 
 # read password for disk encryption
 echo -e "\nDISK ENCRYPTION PASSWORD\n-------------------"
@@ -43,12 +48,13 @@ done
 # What will be done?
 echo -e "\nCONFIGURATION SUMMARY\n---------------------"
 
+swapSize=$(getSwapSize)
 echo "Installation target: ${target}"
-echo "RAM size: ${memory}"
+echo "SWAP size: ${swapSize} (for hibernation)"
 echo "Partitions:"
 echo -e "\tESP - from 1MiB to 512MiB (fat32)"
-echo -e "\troot - from 512MiB to end (except ${memory}GiB)"
-echo -e "\tswap - the last ${memory}GiB"
+echo -e "\troot - from 512MiB to ${swapSize}GiB before the end"
+echo -e "\tswap - the last ${swapSize}GiB"
 
 echo -e "\nReady to delete ALL your data on ${target}!"
 confirm2continue
@@ -61,6 +67,7 @@ echo "blkdiscard -v ${target}"
 echo "wipefs -a ${target}"
 
 # Partitioning
+# possible alternative sfdisk https://superuser.com/a/1132834
 echo -e "\nCreating partitions"
 echo "parted ${target} -- mklabel gpt"
 echo "parted ${target} -- mkpart primary 512MiB -${memory}GiB"
