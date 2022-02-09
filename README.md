@@ -13,7 +13,7 @@ Now, I'm waiting for elementary 7.
 
 ## NixOS
 
-Moved to repository [sonstnochwas/nixos](../nixos/README.md)
+Moved to repository [sonstnochwas/nixos](https://github.com/sonstnochwas/nixos)
 
 ## Distro-hopping relics
 
