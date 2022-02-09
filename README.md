@@ -14,15 +14,13 @@ By the way: KDE Plasma configuration seems to be straight forward with `ini`-fil
 
 In case KDE Plasma isn't my cup of tea ...
 
+## NixOS
+
+Moved to repository [sonstnochwas/nixos](../nixos/README.md)
+
 ## Distro-hopping relics
 
 I'll use Fedora (i3wm and KDE spin) some time with my custom configuration ... which is about to be created.
-
-### NixOS (21.05)
-
-- [NixOS Package Search](https://search.nixos.org/packages)
-- [NixOS Options Search](https://search.nixos.org/options)
-- [NixOS Handbook](https://nixos.org/manual/nixos/stable)
 
 ## ToDo
 
