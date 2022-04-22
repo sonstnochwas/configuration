@@ -4,20 +4,20 @@
 
 ## Fedora 35 (`ansible/fedora/`)
 
-My main work and private setup.
+My main work and private setup. Soon to be switched to Fedora 36 ...
+
+... or completely replaced by NixOS 22.05.
 
 ## elementary OS (`ansible/elementaryos/`)
 
 Current until beginning of Q4 2021.
 Now, I'm waiting for elementary 7.
 
+... or completely replaced by NixOS 22.05.
+
 ## NixOS
 
 Moved to repository [sonstnochwas/nixos](https://github.com/sonstnochwas/nixos)
-
-## Distro-hopping relics
-
-I'll use Fedora (i3wm and KDE spin) some time with my custom configuration ... which is about to be created.
 
 ## ToDo
 
