@@ -1,66 +1,8 @@
 ---
 #------------------------------------------------------------------------------
-# Docker CE
+# k3s
+# see: https://github.com/k3s-io/k3s-ansible
 #------------------------------------------------------------------------------
-
-
-- name: Remove legacy Docker packages
-  become: true
-  dnf:
-    name:
-      - docker
-      - docker-client
-      - docker-client-latest
-      - docker-common
-      - docker-latest
-      - docker-latest-logrotate
-      - docker-logrotate
-      - docker-selinux
-      - docker-engine-selinux
-      - docker-engine
-    autoremove: yes
-    state: absent
-
-
-- name: add teams repository
-  become: yes
-  yum_repository:
-    name: docker-ce-stable
-    description: Docker CE Stable
-    baseurl: https://download.docker.com/linux/fedora/$releasever/$basearch/stable
-    gpgkey: https://download.docker.com/linux/fedora/gpg
-
-- name: Install Docker CE
-  become: true
-  dnf:
-    name:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
-      - docker-compose
-    state: present
-
-- name: Ensure group "docker" exists
-  become: true
-  group:
-    name: docker
-    state: present
-
-- name: Adding existing user {{ user.name }} to group docker (to run docker without sudo)
-  become: true
-  user:
-    name: "{{ user.name }}"
-    groups:
-      - docker
-    append: yes
-
-- name: Disable and stop docker service (start manually when needed)
-  become: true
-  systemd:
-    state: stopped
-    enabled: no
-    name: docker
-
 
 #------------------------------------------------------------------------------
 # Kubectl
@@ -107,24 +49,6 @@
 
 
 #------------------------------------------------------------------------------
-# k3d (https://github.com/rancher/k3d)
-#------------------------------------------------------------------------------
-
-- name: "Check for latest version"
-  uri:
-    url: https://api.github.com/repos/rancher/k3d/releases/latest
-    return_content: true
-  register: latest_release
-
-- name: "Download k3d version {{ latest_release.json.tag_name }} and copy it to /usr/local/bin/"
-  become: true
-  get_url:
-    url: "https://github.com/rancher/k3d/releases/download/{{ latest_release.json.tag_name }}/k3d-linux-{{ system.arch }}"
-    dest: /usr/local/bin/k3d
-    mode: u+rwx,g+rx,o+rx
-
-
-#------------------------------------------------------------------------------
 # Hashicorp
 #------------------------------------------------------------------------------
 
@@ -145,3 +69,65 @@
       - nomad
       - consul
     state: present
+
+#------------------------------------------------------------------------------
+# Docker CE
+#------------------------------------------------------------------------------
+#
+#
+# - name: Remove legacy Docker packages
+#   become: true
+#   dnf:
+#     name:
+#       - docker
+#       - docker-client
+#       - docker-client-latest
+#       - docker-common
+#       - docker-latest
+#       - docker-latest-logrotate
+#       - docker-logrotate
+#       - docker-selinux
+#       - docker-engine-selinux
+#       - docker-engine
+#     autoremove: yes
+#     state: absent
+#
+#
+# - name: add docker repository
+#   become: yes
+#   yum_repository:
+#     name: docker-ce-stable
+#     description: Docker CE Stable
+#     baseurl: https://download.docker.com/linux/fedora/$releasever/$basearch/stable
+#     gpgkey: https://download.docker.com/linux/fedora/gpg
+#
+# - name: Install Docker CE
+#   become: true
+#   dnf:
+#     name:
+#       - docker-ce
+#       - docker-ce-cli
+#       - containerd.io
+#       - docker-compose
+#     state: present
+#
+# - name: Ensure group "docker" exists
+#   become: true
+#   group:
+#     name: docker
+#     state: present
+#
+# - name: Adding existing user {{ user.name }} to group docker (to run docker without sudo)
+#   become: true
+#   user:
+#     name: "{{ user.name }}"
+#     groups:
+#       - docker
+#     append: yes
+#
+# - name: Disable and stop docker service (start manually when needed)
+#   become: true
+#   systemd:
+#     state: stopped
+#     enabled: no
+#     name: docker

@@ -2,25 +2,22 @@
 
 > These configurations are for my personal use and usually under construction ... so please use with care!
 
-## Fedora 34 (`/fedora/`)
+## Fedora 35 (`ansible/fedora/`)
 
-Here could be a extensive discussion about the GUI I prefer, but to be honest this is changing several times a year. I haven't used KDE Plasma in a wile so ... say "Hi!" to Fedora KDE spin :-)
+My main work and private setup. Soon to be switched to Fedora 36 ...
 
-After the base installation the user creation, software installation and KDE customization is done by Ansible.
+... or completely replaced by NixOS 22.05.
 
-By the way: KDE Plasma configuration seems to be straight forward with `ini`-files in `.config/`. There is an [Ansible module](https://docs.ansible.com/ansible/2.9/modules/ini_file_module.html) for that! Very handy!
+## elementary OS (`ansible/elementaryos/`)
 
-## elementary OS (`/elementaryos/`)
+Current until beginning of Q4 2021.
+Now, I'm waiting for elementary 7.
 
-In case KDE Plasma isn't my cup of tea ...
+... or completely replaced by NixOS 22.05.
 
 ## NixOS
 
-Moved to repository [sonstnochwas/nixos](../nixos/README.md)
-
-## Distro-hopping relics
-
-I'll use Fedora (i3wm and KDE spin) some time with my custom configuration ... which is about to be created.
+Moved to repository [sonstnochwas/nixos](https://github.com/sonstnochwas/nixos)
 
 ## ToDo
 

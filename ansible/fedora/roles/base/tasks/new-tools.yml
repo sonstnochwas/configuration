@@ -1,0 +1,99 @@
+---
+
+#------------------------------------------------------------------------------
+# starship
+# https://starship.rs/config/
+#------------------------------------------------------------------------------
+
+- name: Ensure directory exists
+  become: true
+  file:
+    path: "{{ user.home }}/{{ item }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  loop:
+    - ".config/starship"
+
+- name: Copy configuration
+  become: true
+  copy:
+    src: "starship/{{ item.name }}"
+    dest: "{{ user.home }}/.config/starship/{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group.name }}"
+  with_items:
+    - { name: 'starship.toml', mode: 'u+rw' }
+
+- name: Install additional packages
+  become: true
+  dnf:
+    name: starship
+    state: present
+
+
+#------------------------------------------------------------------------------
+# NeoVim
+#------------------------------------------------------------------------------
+#
+# - name: create directories
+#   become: yes
+#   file:
+#     path: "{{ user.home }}/{{ item }}"
+#     state: directory
+#     owner: "{{ user.name }}"
+#     group: "{{ user.group.name }}"
+#   loop:
+#     - ".config/nvim/colors"
+#
+# - name: copy configuration
+#   become: yes
+#   copy:
+#     src: "neovim/{{ item.name }}"
+#     dest: "{{ user.home }}/.config/nvim/{{ item.name }}"
+#     mode: "{{ item.mode }}"
+#     owner: "{{ user.name }}"
+#     group: "{{ user.group.name }}"
+#   with_items:
+#     - { name: 'init.vim', mode: 'u+rw' }
+#     - { name: 'colors/nord.vim', mode: 'u+rw' }
+#
+# - name: Install additional packages
+#   become: true
+#   dnf:
+#     name: neovim
+#     state: present
+
+
+#------------------------------------------------------------------------------
+# zellij config/theme
+#------------------------------------------------------------------------------
+#
+# - name: Ensure directory exists
+#   become: true
+#   file:
+#     path: "{{ user.home }}/{{ item }}"
+#     state: directory
+#     owner: "{{ user.name }}"
+#     group: "{{ user.group.name }}"
+#   loop:
+#     - ".config/zellij"
+#
+# - name: Copy configuration
+#   become: true
+#   copy:
+#     src: "zellij/{{ item.name }}"
+#     dest: "{{ user.home }}/.config/zellij/{{ item.name }}"
+#     mode: "{{ item.mode }}"
+#     owner: "{{ user.name }}"
+#     group: "{{ user.group.name }}"
+#   with_items:
+#     - { name: 'config.yaml', mode: 'u+rw' }
+#
+# No fedora package, yet. Needs to be installed via "cargo install zellij"
+# - name: Install additional packages
+#   become: true
+#   dnf:
+#     name: bat
+#     state: present
